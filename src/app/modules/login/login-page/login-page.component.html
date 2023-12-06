@@ -1,3 +1,37 @@
-<p>
-  login-page works!
-</p>
+<ion-content class="ion-padding">
+  
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Login</ion-card-title>
+      <!-- <ion-card-subtitle>Card Subtitle</ion-card-subtitle> -->
+    </ion-card-header>
+  
+    <ion-card-content>
+      <div class="centerLogin">
+        <form>
+          <div>
+            <mat-form-field appearance="outline">
+              <mat-label>Flat No:</mat-label>
+              <input matInput placeholder="Please enter flat no...">
+            </mat-form-field>
+          </div>
+      
+          <div>
+            <mat-form-field appearance="outline">
+              <mat-label>Password:</mat-label>
+              <input matInput [type]="hide ? 'password' : 'text'">
+              <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+      
+          <div>
+            <button mat-stroked-button color="primary">Primary</button>
+          </div>
+        </form>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
