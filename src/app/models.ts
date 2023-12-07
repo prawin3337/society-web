@@ -4,3 +4,8 @@ export interface IUser {
     mobileNumber: number,
     emailId?: string
 }
+
+export interface ILogin {
+    id: string,
+    password: string
+}

@@ -11,6 +11,8 @@ import { MatButtonModule } from "@angular/material/button";
 
 import { LoginRoutingModule } from './login-routing.module';
 import { LoginPageComponent } from './login-page/login-page.component';
+import { FormsModule } from '@angular/forms';
+import { LoginService } from 'src/app/services/login.service';
 
 
 @NgModule({
@@ -19,6 +21,7 @@ import { LoginPageComponent } from './login-page/login-page.component';
   ],
   imports: [
     CommonModule,
+    FormsModule,
     LoginRoutingModule,
     MatFormFieldModule,
     MatInputModule,
@@ -26,6 +29,9 @@ import { LoginPageComponent } from './login-page/login-page.component';
     MatCardModule,
     IonicModule,
     MatButtonModule
+  ],
+  providers: [
+    
   ]
 })
 export class LoginModule { }

@@ -10,16 +10,27 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { HttpClientModule } from '@angular/common/http';
+import { LoginService } from './services/login.service';
+
+import { UserState } from "./store/user.state";
+import { LoginSate } from './store/login.state'
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
     BrowserAnimationsModule,
-    NgxsModule.forRoot([]),
-    AppRoutingModule
+    NgxsModule.forRoot([UserState, LoginSate]),
+    AppRoutingModule,
+    HttpClientModule
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [{
+    provide: RouteReuseStrategy,
+    useClass: IonicRouteStrategy},
+    LoginService
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

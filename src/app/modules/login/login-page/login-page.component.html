@@ -1,5 +1,4 @@
 <ion-content class="ion-padding">
-  
   <ion-card>
     <ion-card-header>
       <ion-card-title>Login</ion-card-title>
@@ -8,18 +7,18 @@
   
     <ion-card-content>
       <div class="centerLogin">
-        <form>
+        <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
           <div>
             <mat-form-field appearance="outline">
               <mat-label>Flat No:</mat-label>
-              <input matInput placeholder="Please enter flat no...">
+              <input name="id" ngModel matInput placeholder="Please enter flat no..." required>
             </mat-form-field>
           </div>
       
           <div>
             <mat-form-field appearance="outline">
               <mat-label>Password:</mat-label>
-              <input matInput [type]="hide ? 'password' : 'text'">
+              <input name="password" ngModel matInput [type]="hide ? 'password' : 'text'" required>
               <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
                 [attr.aria-pressed]="hide">
                 <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
@@ -28,7 +27,7 @@
           </div>
       
           <div>
-            <button mat-stroked-button color="primary">Primary</button>
+            <button [disabled]="!loginForm.valid" mat-stroked-button color="primary">Login</button>
           </div>
         </form>
       </div>
