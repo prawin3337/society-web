@@ -4,7 +4,7 @@ import { LandingPage } from './landing.page';
 
 const routes: Routes = [
   {
-    path: 'society',
+    path: '',
     component: LandingPage,
     children: [
       {
