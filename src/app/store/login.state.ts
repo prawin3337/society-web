@@ -7,14 +7,14 @@ import { tap } from 'rxjs/operators';
 import { GetLogin } from "./login.action";
 import { LoginService } from "../services/login.service";
 
-export class UserStateModel {
-    users: any
+export class LoginStateModel {
+    login: any
 }
 
-@State<UserStateModel>({
+@State<LoginStateModel>({
     name: 'loginSate',
     defaults: {
-        users: {}
+        login: {}
     }
 })
 
@@ -23,25 +23,25 @@ export class LoginSate {
     constructor(private loginService: LoginService) { }
 
     @Selector()
-    static selectStateData(state: UserStateModel) {
-        return state.users;
+    static selectStateData(state: LoginStateModel) {
+        return state.login;
     }
 
     @Action(GetLogin)
-    getDataFromState(ctx: StateContext<UserStateModel>, { payload }: GetLogin) {
+    getDataFromState(ctx: StateContext<LoginStateModel>, { payload }: GetLogin) {
         return this.loginService.login(payload)
-            .pipe(tap(returnData => {
+            .pipe(tap(res => {
                 const state = ctx.getState();
 
                 ctx.setState({
                     ...state,
-                    users: returnData //here the data coming from the API will get assigned to the users variable inside the appstate
+                    login: res //here the data coming from the API will get assigned to the users variable inside the appstate
                 })
             }))
     }
 
     // @Action(AddUsers)
-    // addDataToState(ctx: StateContext<UserStateModel>, { payload }: AddUsers) {
+    // addDataToState(ctx: StateContext<LoginStateModel>, { payload }: AddUsers) {
     //     return this._du.addUsers(payload).pipe(tap(returnData => {
     //         const state = ctx.getState();
     //         ctx.patchState({
@@ -51,7 +51,7 @@ export class LoginSate {
     // }
 
     // @Action(UpdateUsers)
-    // updateDataOfState(ctx: StateContext<UserStateModel>, { payload, id, i }: UpdateUsers) {
+    // updateDataOfState(ctx: StateContext<LoginStateModel>, { payload, id, i }: UpdateUsers) {
     //     return this._du.updateUser(payload, i).pipe(tap(returnData => {
     //         const state = ctx.getState();
 
@@ -66,7 +66,7 @@ export class LoginSate {
     // }
 
     // @Action(DeleteUsers)
-    // deleteDataFromState(ctx: StateContext<UserStateModel>, { id }: DeleteUsers) {
+    // deleteDataFromState(ctx: StateContext<LoginStateModel>, { id }: DeleteUsers) {
     //     return this._du.deleteUser(id).pipe(tap(returnData => {
     //         const state = ctx.getState();
     //         console.log("The is is", id)

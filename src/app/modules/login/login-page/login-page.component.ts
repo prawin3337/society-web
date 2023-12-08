@@ -9,6 +9,7 @@ import { LoginService } from 'src/app/services/login.service';
 import { GetLogin } from "../../../store/login.action";
 import { LoginSate } from "../../../store/login.state";
 import { Observable } from 'rxjs';
+import { StorageService } from 'src/app/services/storage.service';
 
 
 @Component({
@@ -23,12 +24,19 @@ export class LoginPageComponent  implements OnInit {
 
   @Select(LoginSate.selectStateData) loginData$: Observable<ILogin> | undefined;
 
-  constructor(private store: Store) { }
+  constructor(private store: Store, private storageService: StorageService) { }
 
   ngOnInit() {
-    this.loginData$?.subscribe((returnData) => {
-      this.loginData = returnData;
-      console.log(this.loginData);
+    this.loginData$?.subscribe((res: any) => {
+      if (res.tokan) {
+        console.log(res.tokan);
+        this.storageService.set("authToken", res.tokan);
+
+        setTimeout(async () => {
+          const authToken = await this.storageService.get('authToken');
+          console.log("authToken= ", authToken);
+        }, 10);
+      }
     })
   }
 
