@@ -10,8 +10,6 @@ import { LoginSate } from "../../../store/login.state";
 import { Observable, catchError, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { HttpErrorResponse } from '@angular/common/http';
-
 
 @Component({
   selector: 'app-login-page',
@@ -33,7 +31,6 @@ export class LoginPageComponent  implements OnInit {
   async ngOnInit() {
     this.authService.verifyAuthToken()
       .then((isValid: boolean) => {
-        console.log(isValid);
         isValid && this.router.navigateByUrl('society');
       });
 
