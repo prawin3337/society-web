@@ -12,8 +12,6 @@ import { MatButtonModule } from "@angular/material/button";
 import { LoginRoutingModule } from './login-routing.module';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { FormsModule } from '@angular/forms';
-import { LoginService } from 'src/app/services/login.service';
-
 
 @NgModule({
   declarations: [

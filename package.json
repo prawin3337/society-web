@@ -30,7 +30,6 @@
     "@capacitor/keyboard": "5.0.6",
     "@capacitor/status-bar": "5.0.6",
     "@ionic/angular": "^7.0.0",
-    "@ionic/storage-angular": "^4.0.0",
     "@ngxs/devtools-plugin": "^3.8.2-dev.master-a75608e",
     "@ngxs/logger-plugin": "^3.8.2-dev.master-a75608e",
     "@ngxs/store": "^3.8.2-dev.master-a75608e",

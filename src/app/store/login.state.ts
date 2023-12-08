@@ -1,11 +1,13 @@
 import { Injectable } from "@angular/core";
 import { Action, Selector, State, StateContext } from "@ngxs/store";
-import { tap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 
 // import { DesignutilityService } from "../designutility.service";
 // import { AddUsers, DeleteUsers, GetUsers, UpdateUsers } from "../actions/app.action";
 import { GetLogin } from "./login.action";
 import { LoginService } from "../services/login.service";
+import { Observable, of } from "rxjs";
+import { ToastController } from "@ionic/angular";
 
 export class LoginStateModel {
     login: any
@@ -20,7 +22,7 @@ export class LoginStateModel {
 
 @Injectable()
 export class LoginSate {
-    constructor(private loginService: LoginService) { }
+    constructor(private loginService: LoginService, private toastController: ToastController) { }
 
     @Selector()
     static selectStateData(state: LoginStateModel) {
@@ -30,14 +32,30 @@ export class LoginSate {
     @Action(GetLogin)
     getDataFromState(ctx: StateContext<LoginStateModel>, { payload }: GetLogin) {
         return this.loginService.login(payload)
-            .pipe(tap(res => {
-                const state = ctx.getState();
+            .pipe(
+                catchError(async (error: any, caught: Observable<any>): Promise<Observable<any>> => {
+                    console.error('There was an error!', error);
 
-                ctx.setState({
-                    ...state,
-                    login: res //here the data coming from the API will get assigned to the users variable inside the appstate
+                    const toast = await this.toastController.create({
+                        message: `There was an error! ${error.statusText}.`,
+                        duration: 1500,
+                        position: 'top',
+                    });
+                    await toast.present();
+
+                    // after handling error, return a new observable 
+                    // that doesn't emit any values and completes
+                    return of();
+                }),
+                tap(res => {
+                    const state = ctx.getState();
+
+                    ctx.setState({
+                        ...state,
+                        login: res //here the data coming from the API will get assigned to the users variable inside the appstate
+                    })
                 })
-            }))
+            )
     }
 
     // @Action(AddUsers)
