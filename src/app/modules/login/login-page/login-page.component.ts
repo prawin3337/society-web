@@ -31,16 +31,11 @@ export class LoginPageComponent  implements OnInit {
     private authService: AuthService) { }
 
   async ngOnInit() {
-    const authToken = localStorage.getItem("auth-token") || '';
-    this.authService.verifyAuthToken(authToken)
-        .pipe(
-          catchError(this.handleError)
-        )
-        .subscribe((res: any) => {
-          if (res.success) {
-            this.router.navigateByUrl('society');
-          }
-        })
+    this.authService.verifyAuthToken()
+      .then((isValid: boolean) => {
+        console.log(isValid);
+        isValid && this.router.navigateByUrl('society');
+      });
 
     this.loginData$?.subscribe(async (res: any) => {
       if (res && res.tokan) {
@@ -53,19 +48,4 @@ export class LoginPageComponent  implements OnInit {
   onSubmit(form: NgForm) {
     this.store.dispatch(new GetLogin(form.value));
   }
-
-  private handleError(error: HttpErrorResponse) {
-    if (error.status === 0) {
-      // A client-side or network error occurred. Handle it accordingly.
-      console.error('An error occurred:', error.error);
-    } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong.
-      // console.error(
-      //   `Backend returned code ${error.status}, body was: `, error.error);
-    }
-    // Return an observable with a user-facing error message.
-    return throwError(() => new Error('Something bad happened; please try again later.'));
-  }
-
 }
