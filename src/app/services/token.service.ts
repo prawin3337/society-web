@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
 
+export enum TokenEnum{
+  AuthToke = "auth-token"
+}
+
 @Injectable({
   providedIn: 'root'
 })

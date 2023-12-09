@@ -10,7 +10,7 @@ import { LoginSate } from "../../../store/login.state";
 import { Observable, catchError, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { TokenService } from 'src/app/services/token.service';
+import { TokenService, TokenEnum } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-login-page',
@@ -38,7 +38,7 @@ export class LoginPageComponent  implements OnInit {
 
     this.loginData$?.subscribe(async (res: any) => {
       if (res && res.tokan) {
-        this.tokenService.addToken("auth-token", res.tokan);
+        this.tokenService.addToken(TokenEnum.AuthToke, res.tokan);
         this.router.navigateByUrl('society');
       }
     });

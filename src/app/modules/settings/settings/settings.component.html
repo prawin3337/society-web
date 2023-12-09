@@ -1,0 +1,28 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Settings
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-grid>
+    <ion-row class="text-center">
+      <ion-col>
+        <ion-icon size="large" name="person"></ion-icon>
+        <p><ion-label>Profile Settings</ion-label></p>
+      </ion-col>
+      <ion-col>
+        <ion-icon size="large" name="notifications"></ion-icon>
+        <p><ion-label>Notifications</ion-label></p>
+      </ion-col>
+      <ion-col>
+        <a (click)="logout()">
+          <ion-icon size="large" name="log-out"></ion-icon>
+          <p><ion-label>Logout</ion-label></p>
+        </a>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

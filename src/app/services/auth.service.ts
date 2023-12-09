@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
-import { TokenService } from './token.service';
+import { TokenService, TokenEnum } from './token.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class AuthService {
 
   async verifyAuthToken() {
     return new Promise<boolean>(async (resolve) => {
-      const authToken = this.tokenService.getToken("auth-token");
+      const authToken = this.tokenService.getToken(TokenEnum.AuthToke);
       if (authToken) {
         let headers = new HttpHeaders({ "Authorization": authToken });
         await this.http.post(environment.apis.auth, {}, { headers })
@@ -45,5 +45,9 @@ export class AuthService {
     }
     // Return an observable with a user-facing error message.
     return throwError(() => new Error('Something bad happened; please try again later.'));
+  }
+
+  logout() {
+    this.tokenService.deleteToken(TokenEnum.AuthToke)
   }
 }

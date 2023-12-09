@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, CanDeactivate, CanLoad, CanMatch, Route, Router, RouterStateSnapshot, UrlSegment, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
-import { TokenService } from './token.service';
+import { TokenService, TokenEnum } from './token.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<u
       this.authService.verifyAuthToken()
         .then((isValid: boolean) => {
           if(!isValid){
-            this.tokenService.deleteToken("auth-token");
+            this.tokenService.deleteToken(TokenEnum.AuthToke);
             this.router.navigateByUrl('login');
           }
           res(isValid);
@@ -34,7 +34,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<u
       this.authService.verifyAuthToken()
         .then((isValid: boolean) => {
           if (!isValid) {
-            this.tokenService.deleteToken("auth-token");
+            this.tokenService.deleteToken(TokenEnum.AuthToke);
             this.router.navigateByUrl('login');
           }
           res(isValid);
