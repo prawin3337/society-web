@@ -3,6 +3,7 @@ import { ActivatedRouteSnapshot, CanActivate, CanActivateChild, CanDeactivate, C
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import { TokenService, TokenEnum } from './token.service';
+import { AlertController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -11,16 +12,29 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<u
   constructor(
     private authService: AuthService,
     private router: Router,
-    private tokenService:TokenService) {}
+    private tokenService:TokenService,
+    private alertController: AlertController) {}
+  
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      header: 'Session expired...',
+      subHeader: 'Redirecting to login page.',
+      message: 'Please relogin to continue.',
+      buttons: ['OK'],
+    });
+
+    await alert.present();
+  }
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return new Promise((res) => {
       this.authService.verifyAuthToken()
-        .then((isValid: boolean) => {
+        .then(async (isValid: boolean) => {
           if(!isValid){
             this.tokenService.deleteToken(TokenEnum.AuthToke);
+            await this.presentAlert();
             this.router.navigateByUrl('login');
           }
           res(isValid);
@@ -32,9 +46,10 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<u
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return new Promise((res) => {
       this.authService.verifyAuthToken()
-        .then((isValid: boolean) => {
+        .then(async (isValid: boolean) => {
           if (!isValid) {
             this.tokenService.deleteToken(TokenEnum.AuthToke);
+            await this.presentAlert();
             this.router.navigateByUrl('login');
           }
           res(isValid);

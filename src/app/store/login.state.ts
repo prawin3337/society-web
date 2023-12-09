@@ -5,9 +5,9 @@ import { catchError, tap } from 'rxjs/operators';
 // import { DesignutilityService } from "../designutility.service";
 // import { AddUsers, DeleteUsers, GetUsers, UpdateUsers } from "../actions/app.action";
 import { GetLogin } from "./login.action";
-import { LoginService } from "../services/login.service";
 import { Observable, of } from "rxjs";
 import { ToastController } from "@ionic/angular";
+import { AuthService } from "../services/auth.service";
 
 export class LoginStateModel {
     login: any
@@ -22,7 +22,7 @@ export class LoginStateModel {
 
 @Injectable()
 export class LoginSate {
-    constructor(private loginService: LoginService, private toastController: ToastController) { }
+    constructor(private authService: AuthService, private toastController: ToastController) { }
 
     @Selector()
     static selectStateData(state: LoginStateModel) {
@@ -31,7 +31,7 @@ export class LoginSate {
 
     @Action(GetLogin)
     getDataFromState(ctx: StateContext<LoginStateModel>, { payload }: GetLogin) {
-        return this.loginService.login(payload)
+        return this.authService.login(payload)
             .pipe(
                 catchError(async (error: any, caught: Observable<any>): Promise<Observable<any>> => {
                     console.error('There was an error!', error);

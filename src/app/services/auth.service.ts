@@ -4,6 +4,7 @@ import { catchError, throwError } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
 import { TokenService, TokenEnum } from './token.service';
+import { ILogin } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,10 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private tokenService: TokenService) { }
+
+  login(params: ILogin) {
+    return this.http.post(environment.apis.login, params);
+  }
 
   async verifyAuthToken() {
     return new Promise<boolean>(async (resolve) => {

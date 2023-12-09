@@ -11,7 +11,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { HttpClientModule } from '@angular/common/http';
-import { LoginService } from './services/login.service';
+import { AuthService } from "./services/auth.service";
 
 import { UserState } from "./store/user.state";
 import { LoginSate } from './store/login.state'
@@ -31,7 +31,7 @@ import { CommonComponentModule } from './components/common-component.module';
   providers: [{
     provide: RouteReuseStrategy,
     useClass: IonicRouteStrategy},
-    LoginService
+    AuthService
   ],
   bootstrap: [AppComponent],
 })
