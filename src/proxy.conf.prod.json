@@ -1,6 +1,6 @@
 {
     "/api-temp": {
-        "target": "http://localhost:3000",
+        "target": "http://192.168.0.9:3000",
         "secure": false,
         "changeOrigin": true
     }

@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
-
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from "@angular/material/button";
 
-import { LoginRoutingModule } from './login-routing.module';
+import { AuthRoutingModule } from './auth-routing.module';
 import { LoginPageComponent } from './login-page/login-page.component';
-import { FormsModule } from '@angular/forms';
+import { TokenService } from 'src/app/services/token.service';
 
 @NgModule({
   declarations: [
@@ -20,7 +20,7 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     FormsModule,
-    LoginRoutingModule,
+    AuthRoutingModule,
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
@@ -29,7 +29,7 @@ import { FormsModule } from '@angular/forms';
     MatButtonModule
   ],
   providers: [
-    
+    TokenService
   ]
 })
-export class LoginModule { }
+export class AuthModule { }

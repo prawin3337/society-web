@@ -10,6 +10,7 @@ import { LoginSate } from "../../../store/login.state";
 import { Observable, catchError, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-login-page',
@@ -26,7 +27,8 @@ export class LoginPageComponent  implements OnInit {
   constructor(
     private store: Store,
     private router: Router,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private tokenService: TokenService) { }
 
   async ngOnInit() {
     this.authService.verifyAuthToken()
@@ -36,7 +38,7 @@ export class LoginPageComponent  implements OnInit {
 
     this.loginData$?.subscribe(async (res: any) => {
       if (res && res.tokan) {
-        localStorage.setItem("auth-token", res.tokan);
+        this.tokenService.addToken("auth-token", res.tokan);
         this.router.navigateByUrl('society');
       }
     });

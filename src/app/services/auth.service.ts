@@ -2,19 +2,24 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { catchError, throwError } from 'rxjs';
 
+import { environment } from 'src/environments/environment';
+import { TokenService } from './token.service';
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private tokenService: TokenService) { }
 
   async verifyAuthToken() {
     return new Promise<boolean>(async (resolve) => {
-    const authToken = this.getAuthToken();
+      const authToken = this.tokenService.getToken("auth-token");
       if (authToken) {
-          let headers = new HttpHeaders({ "auth-token": authToken });
-          await this.http.post("/api/auth", {}, { headers })
+        let headers = new HttpHeaders({ "Authorization": authToken });
+        await this.http.post(environment.apis.auth, {}, { headers })
             .pipe(catchError((error: HttpErrorResponse) => {
               resolve(false);
               return this.handleError(error);
@@ -26,10 +31,6 @@ export class AuthService {
         resolve(false);
       }
     });
-  }
-
-  getAuthToken() {
-    return localStorage.getItem("auth-token");
   }
 
   private handleError(error: HttpErrorResponse) {

@@ -5,6 +5,8 @@ import { FormsModule } from '@angular/forms';
 
 import { TabsPageRoutingModule } from './landing-routing.module';
 
+import { CommonComponentModule } from "../../components/common-component.module";
+
 import { LandingPage } from './landing.page';
 
 @NgModule({
@@ -12,7 +14,8 @@ import { LandingPage } from './landing.page';
     IonicModule,
     CommonModule,
     FormsModule,
-    TabsPageRoutingModule
+    TabsPageRoutingModule,
+    CommonComponentModule
   ],
   declarations: [LandingPage]
 })

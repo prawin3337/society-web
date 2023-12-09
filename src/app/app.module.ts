@@ -15,6 +15,7 @@ import { LoginService } from './services/login.service';
 
 import { UserState } from "./store/user.state";
 import { LoginSate } from './store/login.state'
+import { CommonComponentModule } from './components/common-component.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,7 +25,8 @@ import { LoginSate } from './store/login.state'
     BrowserAnimationsModule,
     NgxsModule.forRoot([UserState, LoginSate]),
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    CommonComponentModule
   ],
   providers: [{
     provide: RouteReuseStrategy,

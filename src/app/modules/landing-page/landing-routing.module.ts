@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes, mapToCanActivate, mapToCanActivateChild } from '@angular/router';
 import { LandingPage } from './landing.page';
+import { AuthGuard } from 'src/app/services/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
     component: LandingPage,
+    canActivate: mapToCanActivate([AuthGuard]),
+    canActivateChild: mapToCanActivateChild([AuthGuard]),
     children: [
       {
         path: 'dashboard',
