@@ -5,6 +5,8 @@ import { catchError, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { TokenService, TokenEnum } from './token.service';
 import { ILogin } from '../models';
+import { LoadingService } from './loading.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,13 +15,16 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private tokenService: TokenService) { }
+    private tokenService: TokenService,
+    private loadingService: LoadingService,
+    private router: Router) { }
 
   login(params: ILogin) {
     return this.http.post(environment.apis.login, params);
   }
 
   async verifyAuthToken() {
+    this.loadingService.showLoading();
     return new Promise<boolean>(async (resolve) => {
       const authToken = this.tokenService.getToken(TokenEnum.AuthToke);
       if (authToken) {
@@ -29,16 +34,18 @@ export class AuthService {
               resolve(false);
               return this.handleError(error);
             }))
-            .subscribe((res: any) => {
-              resolve(res.success)
+            .subscribe(async (res: any) => {
+              await this.loadingService.hideLoading();
+              resolve(res.success);
             });
       } else {
+        await this.loadingService.hideLoading();
         resolve(false);
       }
     });
   }
 
-  private handleError(error: HttpErrorResponse) {
+  private async handleError(error: HttpErrorResponse) {
     if (error.status === 0) {
       // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error);
@@ -49,10 +56,12 @@ export class AuthService {
       //   `Backend returned code ${error.status}, body was: `, error.error);
     }
     // Return an observable with a user-facing error message.
+    await this.loadingService.hideLoading();
     return throwError(() => new Error('Something bad happened; please try again later.'));
   }
 
   logout() {
-    this.tokenService.deleteToken(TokenEnum.AuthToke)
+    this.tokenService.deleteToken(TokenEnum.AuthToke);
+    this.router.navigateByUrl("login");
   }
 }
