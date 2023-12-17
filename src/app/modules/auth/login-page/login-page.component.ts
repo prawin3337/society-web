@@ -173,7 +173,9 @@ export class LoginPageComponent  implements OnInit {
     if(panNo && flatNo && password && password === confirmPassword) {
       this.http.patch(environment.apis.updatePassword, { flatNo, panNo, password })
         .subscribe((res: any) => {
-          console.log(res);
+          if (res.success) {
+            window.location.reload();
+          }
         });
     }
   }

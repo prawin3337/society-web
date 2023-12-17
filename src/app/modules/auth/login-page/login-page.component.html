@@ -61,7 +61,7 @@
             </mat-form-field>
           </div>
 
-          <div [ngClass]="confirmPasswordControl.errors ? 'mt-5' : 'mt-1'">
+          <div [ngClass]="(confirmPasswordControl.dirty && !confirmPasswordControl.valid) ? 'mt-4' : 'mt-1'">
             <div *ngIf="!isRegisteredMember">
               <button [disabled]="!confirmPasswordControl.valid || !passwordControl.valid"
                 (click)="onSetPassword()"
