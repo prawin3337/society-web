@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
 
 export enum TokenEnum{
   AuthToke = "auth-token"
@@ -9,17 +10,23 @@ export enum TokenEnum{
 })
 export class TokenService {
 
-  constructor() { }
+  constructor(private cookieService: CookieService) { }
 
   addToken(key: string, value: string) {
-    localStorage.setItem(key, value);
+    const myDate: Date = new Date();
+    myDate.setMinutes(myDate.getMinutes() + 15);
+    this.cookieService.set(key, value, { expires: myDate });
   }
 
   getToken(key: string): string {
-    return localStorage.getItem(key) || '';
+    return this.cookieService.get(key);
   }
 
   deleteToken(key: string) {
-    localStorage.removeItem(key);
+    this.cookieService.delete(key);
+  }
+
+  tokenAvailable(key: string) {
+    return this.cookieService.check(key);
   }
 }

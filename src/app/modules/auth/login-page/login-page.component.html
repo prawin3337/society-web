@@ -1,33 +1,77 @@
 <ion-content class="ion-padding">
   <ion-card>
     <ion-card-header>
-      <ion-card-title>Login</ion-card-title>
+      <ion-card-title>
+        {{isRegisteredMember ? 'Login' : 'Register'}}
+      </ion-card-title>
       <!-- <ion-card-subtitle>Card Subtitle</ion-card-subtitle> -->
     </ion-card-header>
   
     <ion-card-content>
       <div class="centerLogin">
-        <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
+        <form class="example-form">
           <div>
             <mat-form-field appearance="outline">
               <mat-label>Flat No:</mat-label>
-              <input name="id" ngModel matInput placeholder="Please enter flat no..." required>
+              <input type="text" placeholder="Pick one" aria-label="Flat No" matInput [formControl]="flatNoControl"
+                placeholder="Please enter flat no..."
+                (blur)="onFlatNoSelect()"
+                [matAutocomplete]="auto">
+              <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                @for (option of filteredOptions | async; track option) {
+                <mat-option [value]="option">{{option}}</mat-option>
+                }
+              </mat-autocomplete>
             </mat-form-field>
           </div>
-      
-          <div>
+
+          <div *ngIf="!isRegisteredMember && flatNoControl.valid">
+            <mat-form-field appearance="outline">
+              <mat-label>PAN No:</mat-label>
+              <input name="panNo" [formControl]="panControl"
+                oninput="this.value = this.value.toUpperCase()"
+                matInput placeholder="Please enter PAN no...">
+            </mat-form-field>
+          </div>
+
+          <div *ngIf="isRegisteredMember || isValidPan()">
             <mat-form-field appearance="outline">
               <mat-label>Password:</mat-label>
-              <input name="password" ngModel matInput [type]="hide ? 'password' : 'text'" required>
-              <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
-                [attr.aria-pressed]="hide">
-                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              <input name="password" matInput [type]="hidePassword ? 'password' : 'text'" [formControl]="passwordControl">
+              <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hidePassword">
+                <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
               </button>
             </mat-form-field>
           </div>
-      
-          <div>
-            <button [disabled]="!loginForm.valid" mat-stroked-button color="primary">Login</button>
+
+          <div *ngIf="isValidPan()">
+            <mat-form-field appearance="outline">
+              <mat-label>Confirm password:</mat-label>
+              <input name="confirmPassword" matInput
+                [type]="hideConfirmPassword ? 'password' : 'text'"
+                [formControl]="confirmPasswordControl">
+              <button mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword" [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hideConfirmPassword">
+                <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+              <mat-error *ngIf="confirmPasswordControl.errors">
+                {{confirmPasswordControl.errors['invalidConfirmPass']}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div [ngClass]="confirmPasswordControl.errors ? 'mt-5' : 'mt-1'">
+            <div *ngIf="!isRegisteredMember">
+              <button [disabled]="!confirmPasswordControl.valid || !passwordControl.valid"
+                (click)="onSetPassword()"
+                mat-stroked-button color="primary">Set Password</button>
+            </div>
+            <div *ngIf="isRegisteredMember">
+              <button (click)="login()" mat-stroked-button color="primary">
+                Login
+              </button>
+            </div>
           </div>
         </form>
       </div>

@@ -44,16 +44,14 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<u
   canActivateChild(
     childRoute: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return new Promise((res) => {
-      this.authService.verifyAuthToken()
-        .then(async (isValid: boolean) => {
-          if (!isValid) {
-            this.tokenService.deleteToken(TokenEnum.AuthToke);
-            await this.presentAlert();
-            this.router.navigateByUrl('login');
-          }
-          res(isValid);
-        });
+    return new Promise(async (res) => {
+      const isValid = this.tokenService.tokenAvailable(TokenEnum.AuthToke);
+      if (!isValid) {
+        this.tokenService.deleteToken(TokenEnum.AuthToke);
+        await this.presentAlert();
+        this.router.navigateByUrl('login');
+      }
+      res(isValid);
     });
   }
   canDeactivate(
