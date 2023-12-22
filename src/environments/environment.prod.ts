@@ -5,8 +5,9 @@ export const environment = {
   apis: {
     login: `${apiDomain}/api/login`,
     auth: `${apiDomain}/api/auth`,
-    memberIds: `${apiDomain}/api/login/member-ids`,
+    members: `${apiDomain}/api/members`,
     validatePan: `${apiDomain}/api/login/validate-pan`,
-    updatePassword: `${apiDomain}/api/auth/update-password`
+    updatePassword: `${apiDomain}/api/auth/update-password`,
+    flatNos: `${apiDomain}/api/flats`
   }
 };

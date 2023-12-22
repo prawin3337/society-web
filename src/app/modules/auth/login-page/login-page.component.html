@@ -10,7 +10,7 @@
     <ion-card-content>
       <div class="centerLogin">
         <form class="example-form">
-          <div>
+          <div *ngIf="options.length && !isRegisteredMember">
             <mat-form-field appearance="outline">
               <mat-label>Flat No:</mat-label>
               <input type="text" placeholder="Pick one" aria-label="Flat No" matInput [formControl]="flatNoControl"
@@ -34,6 +34,14 @@
             </mat-form-field>
           </div>
 
+          <div *ngIf="isRegisteredMember">
+            <mat-form-field appearance="outline">
+              <mat-label>User ID:</mat-label>
+              <input name="userId" [formControl]="userIdControl" matInput
+                placeholder="Please enter user id...">
+            </mat-form-field>
+          </div>
+
           <div *ngIf="isRegisteredMember || isValidPan()">
             <mat-form-field appearance="outline">
               <mat-label>Password:</mat-label>
@@ -45,7 +53,7 @@
             </mat-form-field>
           </div>
 
-          <div *ngIf="isValidPan()">
+          <div *ngIf="isValidPan() && !isRegisteredMember">
             <mat-form-field appearance="outline">
               <mat-label>Confirm password:</mat-label>
               <input name="confirmPassword" matInput
@@ -68,7 +76,10 @@
                 mat-stroked-button color="primary">Set Password</button>
             </div>
             <div *ngIf="isRegisteredMember">
-              <button (click)="login()" mat-stroked-button color="primary">
+              <button (click)="onDistroy()" mat-stroked-button color="primary">
+                Back
+              </button>
+              <button (click)="login()" mat-stroked-button class="float-end" color="primary">
                 Login
               </button>
             </div>

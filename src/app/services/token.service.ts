@@ -23,7 +23,8 @@ export class TokenService {
   }
 
   deleteToken(key: string) {
-    this.cookieService.delete(key);
+    // this.cookieService.deleteAll();
+    this.cookieService.set(key, "", { expires: new Date().getSeconds()+1 });
   }
 
   tokenAvailable(key: string) {

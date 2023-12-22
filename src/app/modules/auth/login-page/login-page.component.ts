@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnDestroy, OnInit} from '@angular/core';
 import { AbstractControl, FormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 
 import { Select, Store } from '@ngxs/store';
@@ -7,7 +7,7 @@ import { ILogin } from "../../../models";
 
 import { GetLogin } from "../../../store/login.action";
 import { LoginSate } from "../../../store/login.state";
-import { Observable, catchError, debounce, map, of, startWith, throwError } from 'rxjs';
+import { Observable, catchError, debounce, elementAt, map, of, startWith, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { TokenService, TokenEnum } from 'src/app/services/token.service';
@@ -15,23 +15,25 @@ import { MemberService } from 'src/app/services/member.service';
 import { updateItem } from '@ngxs/store/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { FlatService } from 'src/app/services/flat.service';
+import { LoadingService } from 'src/app/services/loading.service';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login-page',
   templateUrl: './login-page.component.html',
-  styleUrls: ['./login-page.component.scss'],
+  styleUrls: ['./login-page.component.scss']
 })
-export class LoginPageComponent  implements OnInit {
+export class LoginPageComponent  implements OnInit, OnDestroy {
 
   hidePassword = true;
   hideConfirmPassword = true;
-
+  loadingCtr:any;
   loginData = {};
-
-  @Select(LoginSate.selectStateData) loginData$: Observable<ILogin> | undefined;
   options: string[] = [];
   flatNoList: any[] = [];
-  isRegisteredMember = true;
+  isRegisteredMember = false;
+  @Select(LoginSate.selectStateData) loginData$: Observable<ILogin> | undefined;
   filteredOptions: Observable<string[]> = {} as Observable<string[]>;
 
   flatNoControl = new FormControl('', {
@@ -42,6 +44,10 @@ export class LoginPageComponent  implements OnInit {
         return isValid ? null : { invalidFlat: "Entered Invalid flat number." }
       }
     ], updateOn: 'change'
+  });
+
+  userIdControl = new FormControl('', {
+    validators: [Validators.required]
   });
 
   panControl = new FormControl('', {
@@ -97,6 +103,8 @@ export class LoginPageComponent  implements OnInit {
     private authService: AuthService,
     private tokenService: TokenService,
     private memberService: MemberService,
+    private flatService: FlatService,
+    private loadingCtrl: LoadingController,
     private http: HttpClient) {}
 
   private get password() {
@@ -116,6 +124,9 @@ export class LoginPageComponent  implements OnInit {
   }
 
   async ngOnInit() {
+    this.loadingCtr = await this.loadingCtrl.create({});
+    (await this.loadingCtr).present();
+
     this.authService.verifyAuthToken()
       .then((isValid: boolean) => {
         isValid && this.router.navigateByUrl('society');
@@ -124,16 +135,17 @@ export class LoginPageComponent  implements OnInit {
     this.loginData$?.subscribe(async (res: any) => {
       if (res && res.tokan) {
         this.tokenService.addToken(TokenEnum.AuthToke, res.tokan);
-        this.router.navigateByUrl('society');
+        this.router.navigateByUrl('society', {skipLocationChange: false});
       }
     });
 
     this.memberService.getMemberIds()
-      .subscribe((res: any) => {
+      .subscribe(async (res: any) => {
         if(res.success) {
           this.flatNoList = res.data;
           this.options = res.data.map((obj: any) => obj.flatNo);
         }
+        await this.loadingCtrl.dismiss();
       });
 
     this.filteredOptions = this.flatNoControl.valueChanges.pipe(
@@ -149,9 +161,15 @@ export class LoginPageComponent  implements OnInit {
   private isRegistered() {
     this.isRegisteredMember = this.flatNoControl.valid;
     if (this.flatNoControl.valid) {
-      this.isRegisteredMember = this.flatNoList
-        .find((obj) => obj.flatNo == this.flatNoControl.value)
-        ?.isRegistered;
+      const member = this.flatNoList
+        .find((obj) => obj.flatNo == this.flatNoControl.value);
+
+      if (member) {
+        this.isRegisteredMember = member.isRegistered;
+        this.userIdControl.setValue(member.userId);
+        return;
+      }
+      this.isRegisteredMember = false;
     }
   }
 
@@ -174,7 +192,8 @@ export class LoginPageComponent  implements OnInit {
       this.http.patch(environment.apis.updatePassword, { flatNo, panNo, password })
         .subscribe((res: any) => {
           if (res.success) {
-            window.location.reload();
+            // window.location.reload();
+            this.isRegisteredMember = true;
           }
         });
     }
@@ -183,9 +202,26 @@ export class LoginPageComponent  implements OnInit {
   login() {
     const flatNo = this.flatNoControl.value;
     const password = this.passwordControl.value;
-    if (flatNo && password) {
-      const params: ILogin = { flatNo, password };
+    const userId = this.userIdControl.value;
+    if (flatNo && password && userId) {
+      const params: ILogin = { password, userId };
       this.store.dispatch(new GetLogin(params));
     }
+  }
+
+  ngOnDestroy(): void {
+    this.onDistroy();
+  }
+
+  ionViewDidLeave() {
+    this.onDistroy();
+  }
+
+  onDistroy() {
+    this.isRegisteredMember = false;
+    this.flatNoControl.setValue(null);
+    this.passwordControl.setValue(null);
+    this.confirmPasswordControl.setValue(null);
+    this.panControl.setValue(null);
   }
 }

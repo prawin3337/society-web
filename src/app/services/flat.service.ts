@@ -5,11 +5,11 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class MemberService {
+export class FlatService {
 
   constructor(private http: HttpClient) { }
 
-  getMemberIds() {
-    return this.http.get(environment.apis.members);
+  getFlatNos() {
+    return this.http.get(environment.apis.flatNos);
   }
 }

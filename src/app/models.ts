@@ -6,6 +6,6 @@ export interface IUser {
 }
 
 export interface ILogin {
-    flatNo: string,
+    userId: string,
     password: string
 }

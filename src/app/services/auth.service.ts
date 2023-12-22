@@ -7,6 +7,7 @@ import { TokenService, TokenEnum } from './token.service';
 import { ILogin } from '../models';
 import { LoadingService } from './loading.service';
 import { Router } from '@angular/router';
+import { LoadingController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -17,14 +18,16 @@ export class AuthService {
     private http: HttpClient,
     private tokenService: TokenService,
     private loadingService: LoadingService,
-    private router: Router) { }
+    private router: Router,
+    private loadingCtrl: LoadingController) { }
 
   login(params: ILogin) {
     return this.http.post(environment.apis.login, params);
   }
 
   async verifyAuthToken() {
-    this.loadingService.showLoading();
+    const loading = this.loadingCtrl.create();
+    (await loading).present();
     return new Promise<boolean>(async (resolve) => {
       const authToken = this.tokenService.getToken(TokenEnum.AuthToke);
       if (authToken) {
@@ -35,11 +38,11 @@ export class AuthService {
               return this.handleError(error);
             }))
             .subscribe(async (res: any) => {
-              await this.loadingService.hideLoading();
+              (await loading).dismiss();
               resolve(res.success);
             });
       } else {
-        await this.loadingService.hideLoading();
+        (await loading).dismiss();
         resolve(false);
       }
     });
@@ -60,8 +63,13 @@ export class AuthService {
     return throwError(() => new Error('Something bad happened; please try again later.'));
   }
 
-  logout() {
+  async logout() {
+    const loading = this.loadingCtrl.create();
+    (await loading).present();
     this.tokenService.deleteToken(TokenEnum.AuthToke);
-    this.router.navigateByUrl("login");
+    setTimeout(async() => {
+      (await loading).dismiss();
+      this.router.navigateByUrl("login");
+    }, 1000*5);
   }
 }
