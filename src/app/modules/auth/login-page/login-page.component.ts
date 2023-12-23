@@ -17,7 +17,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { FlatService } from 'src/app/services/flat.service';
 import { LoadingService } from 'src/app/services/loading.service';
-import { LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login-page',
@@ -28,7 +28,6 @@ export class LoginPageComponent  implements OnInit, OnDestroy {
 
   hidePassword = true;
   hideConfirmPassword = true;
-  loadingCtr:any;
   loginData = {};
   options: string[] = [];
   flatNoList: any[] = [];
@@ -105,7 +104,8 @@ export class LoginPageComponent  implements OnInit, OnDestroy {
     private memberService: MemberService,
     private flatService: FlatService,
     private loadingCtrl: LoadingController,
-    private http: HttpClient) {}
+    private http: HttpClient,
+    private alertController: AlertController) {}
 
   private get password() {
     return this.passwordControl.value;
@@ -123,10 +123,7 @@ export class LoginPageComponent  implements OnInit, OnDestroy {
     return this.flatNoControl.value;
   }
 
-  async ngOnInit() {
-    this.loadingCtr = await this.loadingCtrl.create({});
-    (await this.loadingCtr).present();
-
+  ngOnInit() {
     this.authService.verifyAuthToken()
       .then((isValid: boolean) => {
         isValid && this.router.navigateByUrl('society');
@@ -135,23 +132,46 @@ export class LoginPageComponent  implements OnInit, OnDestroy {
     this.loginData$?.subscribe(async (res: any) => {
       if (res && res.tokan) {
         this.tokenService.addToken(TokenEnum.AuthToke, res.tokan);
+        this.fetchMembers();
         this.router.navigateByUrl('society', {skipLocationChange: false});
       }
     });
 
-    this.memberService.getMemberIds()
-      .subscribe(async (res: any) => {
-        if(res.success) {
-          this.flatNoList = res.data;
-          this.options = res.data.map((obj: any) => obj.flatNo);
-        }
-        await this.loadingCtrl.dismiss();
-      });
+    this.fetchMembers();
 
     this.filteredOptions = this.flatNoControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value || ''))
     );
+  }
+
+  // ionViewDidEnter() {
+  //   this.fetchMembers();
+  // }
+
+  async fetchMembers() {
+    const loadingCtr = this.loadingCtrl.create({});
+    (await loadingCtr).present();
+
+    this.memberService.getMemberIds()
+      .pipe(catchError(async (err): Promise<Observable<String>> => {
+        (await loadingCtr).dismiss();
+        const alert = await this.alertController.create({
+          header: '',
+          subHeader: '',
+          message: 'Service unavailable. please contact andministrator...',
+          buttons: ['OK'],
+        });
+        await alert.present();
+        return err;
+      }))
+      .subscribe(async (res: any) => {
+        if (res.success) {
+          this.flatNoList = res.data;
+          this.options = res.data.map((obj: any) => obj.flatNo);
+        }
+        (await loadingCtr).dismiss();
+      });
   }
 
   onFlatNoSelect() {
