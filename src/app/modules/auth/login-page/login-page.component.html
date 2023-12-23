@@ -10,12 +10,13 @@
     <ion-card-content>
       <div class="centerLogin">
         <form class="example-form">
-          <div *ngIf="options.length && !isRegisteredMember">
+          <div *ngIf="options.length">
             <mat-form-field appearance="outline">
               <mat-label>Flat No:</mat-label>
-              <input type="text" placeholder="Pick one" aria-label="Flat No" matInput [formControl]="flatNoControl"
+              <input type="text" placeholder="Pick one" aria-label="Flat No"
+                matInput
+                [formControl]="flatNoControl"
                 placeholder="Please enter flat no..."
-                (blur)="onFlatNoSelect()"
                 [matAutocomplete]="auto">
               <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
                 @for (option of filteredOptions | async; track option) {

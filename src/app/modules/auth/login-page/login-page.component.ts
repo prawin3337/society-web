@@ -137,6 +137,10 @@ export class LoginPageComponent  implements OnInit, OnDestroy {
       }
     });
 
+    this.flatNoControl.valueChanges.subscribe(() => {
+      this.onFlatNoSelect();
+    });
+
     this.fetchMembers();
 
     this.filteredOptions = this.flatNoControl.valueChanges.pipe(
@@ -146,7 +150,7 @@ export class LoginPageComponent  implements OnInit, OnDestroy {
   }
 
   // ionViewDidEnter() {
-  //   this.fetchMembers();
+  //   this.isRegisteredMember = false;
   // }
 
   async fetchMembers() {
@@ -214,15 +218,17 @@ export class LoginPageComponent  implements OnInit, OnDestroy {
           if (res.success) {
             // window.location.reload();
             this.isRegisteredMember = true;
+            this.passwordControl.setValue('');
+            this.confirmPasswordControl.setValue('');
           }
         });
     }
   }
 
   login() {
-    const flatNo = this.flatNoControl.value;
-    const password = this.passwordControl.value;
-    const userId = this.userIdControl.value;
+    const flatNo = this.flatNoControl.value?.trim();
+    const password = this.passwordControl.value?.trim();
+    const userId = this.userIdControl.value?.trim();
     if (flatNo && password && userId) {
       const params: ILogin = { password, userId };
       this.store.dispatch(new GetLogin(params));
