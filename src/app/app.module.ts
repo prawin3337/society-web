@@ -10,8 +10,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthService } from "./services/auth.service";
+import { AuthInterceptor } from "./http-interceptors/auth-interceptor";
 
 import { UserState } from "./store/user.state";
 import { LoginSate } from './store/login.state'
@@ -31,7 +32,8 @@ import { CommonComponentModule } from './components/common-component.module';
   providers: [{
     provide: RouteReuseStrategy,
     useClass: IonicRouteStrategy},
-    AuthService
+    AuthService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent],
 })

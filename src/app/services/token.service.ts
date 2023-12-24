@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 
-export enum TokenEnum{
+export enum TokenEnum {
   AuthToke = "auth-token"
 }
 
