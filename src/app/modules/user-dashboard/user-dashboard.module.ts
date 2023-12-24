@@ -6,6 +6,11 @@ import { UserDashboardPage } from './user-dashboard.page';
 
 import { UserDashboardRoutingModule } from './user-dashboard-routing.module';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { CommonComponentModule } from 'src/app/components/common-component.module';
 
 @NgModule({
   imports: [
@@ -14,7 +19,11 @@ import { MatGridListModule } from '@angular/material/grid-list';
     FormsModule,
     MatGridListModule,
     UserDashboardRoutingModule,
-    IonicModule
+    MatExpansionModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatIconModule,
+    CommonComponentModule
   ],
   declarations: [UserDashboardPage]
 })

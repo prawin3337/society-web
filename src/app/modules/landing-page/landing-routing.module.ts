@@ -24,14 +24,14 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/society/dashboard',
+        redirectTo: '/society/user-dashboard',
         pathMatch: 'full'
       }
     ]
   },
   {
     path: '',
-    redirectTo: '/society/dashboard',
+    redirectTo: '/society/user-dashboard',
     pathMatch: 'full'
   }
 ];

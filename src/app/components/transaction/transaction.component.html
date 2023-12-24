@@ -1,0 +1,53 @@
+<form [formGroup]="trasanctionForm" (submit)="onSubmit()">
+  <mat-form-field>
+    <mat-label>Amount</mat-label>
+    <input matInput placeholder="" type="number" formControlName="amount" name="amount">
+    <!-- @if (amount.invalid) {
+            <mat-error>{{'Error'}}</mat-error>
+          } -->
+  </mat-form-field>
+  
+  <mat-form-field>
+    <mat-label>Transaction No</mat-label>
+    <input matInput placeholder="" formControlName="transactionCode" name="transactionCode">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Receipt</mat-label>
+    <input matInput placeholder="" formControlName="receiptNumber" name="receiptNumber">
+  </mat-form-field>
+
+  <div>
+    <mat-label>Upload Receipt/Bill</mat-label>
+    <div style="position: relative;">
+      <button (click)="takePicture()" type="button" mat-icon-button color="primary" aria-label="Upload receipt">
+        <mat-icon>camera</mat-icon>
+      </button>
+      <ion-img *ngIf="billImage.dataUrl" class="bill-image" [src]="billImage.dataUrl"></ion-img>
+    </div>
+  </div>
+
+  <mat-form-field>
+    <mat-label>Transaction Date</mat-label>
+    <input matInput [matDatepicker]="picker"
+      formControlName="transactionDate" name="transactionDate">
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Transaction Type</mat-label>
+    <mat-select formControlName="transactionType" name="transactionType">
+      @for (type of transactionTypes; track type) {
+      <mat-option [value]="type.value">{{type.viewValue}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Transaction Details</mat-label>
+    <input matInput placeholder="" formControlName="desctription" name="desctription">
+  </mat-form-field>
+
+  <button type="submit" mat-raised-button color="primary">Submit</button>
+</form>

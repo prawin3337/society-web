@@ -7,6 +7,7 @@ import { DashboardPage } from './dashboard.page';
 import { DashboardPageRoutingModule } from './dashboard-routing.module';
 
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
     CommonModule,
     FormsModule,
     MatGridListModule,
+    MatCardModule,
     DashboardPageRoutingModule
   ],
   declarations: [DashboardPage]
