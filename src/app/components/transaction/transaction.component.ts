@@ -1,39 +1,57 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { Camera, CameraResultType, Photo } from '@capacitor/camera';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
+import { MemberService } from 'src/app/services/member.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-transaction',
   templateUrl: './transaction.component.html',
-  styleUrls: ['./transaction.component.scss'],
+  styleUrls: ['./transaction.component.scss']
 })
-export class TransactionComponent  implements OnInit {
+export class TransactionComponent  implements OnInit, OnDestroy {
 
   trasanctionForm: FormGroup = {} as FormGroup;
   billImage: any = {};
+  userInfo: any = {};
 
   transactionTypes = [
     { value: 'maintainance', viewValue: 'Maintainance' }
   ];
 
-  constructor(private http: HttpClient) {
+  members:any[] = [];
+
+  constructor(private http: HttpClient,
+    private memberService: MemberService) {
     defineCustomElements(window);
   }
 
   ngOnInit() {
+    this.memberService.getMemberIds()
+      .subscribe((res: any) => {
+        if(res.success) {
+          this.members = res.data;
+        }
+      });
+
+    this.userInfo = this.memberService.getUserInfo();
     this.buildTransactionForm();
   }
 
   buildTransactionForm() {
     this.trasanctionForm = new FormGroup({
+      flatNo: new FormControl(this.userInfo?.flatNo, { validators: [Validators.required] }),
       amount: new FormControl(null, {validators: [Validators.required]}),
       desctription: new FormControl('', {}),
-      transactionCode: new FormControl('', {validators: [Validators.required]}),
-      transactionDate: new FormControl('', { validators: [Validators.required] }),
+      transactionCode: new FormControl('', { validators: [Validators.required, Validators.minLength(5)]}),
+      transactionDate: new FormControl('',
+        { validators: [
+          Validators.required,
+          // Validators.pattern("(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[1,2])\/(19|20)\d{2}")
+        ]}),
       transactionType: new FormControl('maintainance'),
       receiptNumber: new FormControl(''),
       photo: new FormControl(''),
@@ -45,7 +63,7 @@ export class TransactionComponent  implements OnInit {
     try {
       const image: Photo = await Camera.getPhoto({
         // quality: 90,
-        // allowEditing: false,
+        allowEditing: true,
         resultType: CameraResultType.DataUrl
       });
 
@@ -62,20 +80,33 @@ export class TransactionComponent  implements OnInit {
 
   async onSubmit() {
     const data = this.trasanctionForm.value;
-    console.log("data", data);
     const payload = new FormData();
     for (let key in data) {
-      if (key == 'photo') {
+      if (key == 'photo' && data[key]) {
         await payload.append(key, data[key], `.${this.billImage.format}`);
       } else {
         await payload.append(key, data[key]);
       }
     }
-    console.log(payload);
+
     this.http.post(environment.apis.transaction, payload)
       .subscribe(() => {
         this.billImage = {};
       });;
+  }
+
+  onDestroy() {
+    this.userInfo = {};
+    this.billImage = {};
+    this.trasanctionForm.reset();
+  }
+
+  ionViewDidLeave() {
+    this.onDestroy();
+  }
+
+  ngOnDestroy() {
+    this.onDestroy();
   }
 
 }

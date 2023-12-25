@@ -13,6 +13,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
+import { AuthDirective } from "../directives/auth.directive";
+
 @NgModule({
   declarations: [
     CommonHeaderComponent,
@@ -29,7 +31,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatNativeDateModule,
     MatSelectModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    AuthDirective
   ],
   exports: [
     CommonHeaderComponent,

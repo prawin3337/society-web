@@ -132,6 +132,7 @@ export class LoginPageComponent  implements OnInit, OnDestroy {
     this.loginData$?.subscribe(async (res: any) => {
       if (res && res.tokan) {
         this.tokenService.addToken(TokenEnum.AuthToke, res.tokan);
+        this.tokenService.addToken(TokenEnum.userInfo, JSON.stringify(res.userInfo));
         this.fetchMembers();
         this.router.navigateByUrl('society', {skipLocationChange: false});
       }

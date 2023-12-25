@@ -66,7 +66,7 @@ export class AuthService {
   async logout() {
     const loading = this.loadingCtrl.create();
     (await loading).present();
-    this.tokenService.deleteToken(TokenEnum.AuthToke);
+    this.tokenService.deleteToken([TokenEnum.AuthToke, TokenEnum.userInfo]);
     setTimeout(async() => {
       (await loading).dismiss();
       this.router.navigateByUrl("login");

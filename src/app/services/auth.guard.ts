@@ -33,7 +33,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<u
       this.authService.verifyAuthToken()
         .then(async (isValid: boolean) => {
           if(!isValid){
-            this.tokenService.deleteToken(TokenEnum.AuthToke);
+            this.tokenService.deleteToken([TokenEnum.AuthToke, TokenEnum.userInfo]);
             await this.presentAlert();
             this.router.navigateByUrl('login');
           }
@@ -47,7 +47,7 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<u
     return new Promise(async (res) => {
       const isValid = this.tokenService.tokenAvailable(TokenEnum.AuthToke);
       if (!isValid) {
-        this.tokenService.deleteToken(TokenEnum.AuthToke);
+        this.tokenService.deleteToken([TokenEnum.AuthToke, TokenEnum.userInfo]);
         await this.presentAlert();
         this.router.navigateByUrl('login');
       }
