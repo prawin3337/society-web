@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 
 import { Camera, CameraResultType, Photo } from '@capacitor/camera';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
@@ -50,7 +50,13 @@ export class TransactionComponent  implements OnInit, OnDestroy {
       transactionDate: new FormControl('',
         { validators: [
           Validators.required,
-          // Validators.pattern("(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[1,2])\/(19|20)\d{2}")
+          (control: AbstractControl): ValidationErrors | null => {
+            const dateObj = control.value;
+            if (!dateObj) return null;
+            const dateRgex = new RegExp("^((0?[1-9]|1[012])[- /.](0?[1-9]|[12][0-9]|3[01])[- /.](19|20)?[0-9]{2})*$");
+            const date = (dateObj.getMonth() + 1) + '/' + dateObj.getDate() + '/' + dateObj.getFullYear();
+            return date && date.match(dateRgex) ? null : {wrongDate: "Please enter valid date."} 
+          }
         ]}),
       transactionType: new FormControl('maintainance'),
       receiptNumber: new FormControl(''),
