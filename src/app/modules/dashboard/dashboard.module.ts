@@ -9,6 +9,8 @@ import { DashboardPageRoutingModule } from './dashboard-routing.module';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 
+import { HeaderComponent } from "../../components/header/header.component";
+
 @NgModule({
   imports: [
     IonicModule,
@@ -16,7 +18,8 @@ import { MatCardModule } from '@angular/material/card';
     FormsModule,
     MatGridListModule,
     MatCardModule,
-    DashboardPageRoutingModule
+    DashboardPageRoutingModule,
+    HeaderComponent
   ],
   declarations: [DashboardPage]
 })

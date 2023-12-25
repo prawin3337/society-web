@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonComponentModule } from 'src/app/components/common-component.module';
+import { HeaderComponent } from "../../components/header/header.component";
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { CommonComponentModule } from 'src/app/components/common-component.modul
     MatInputModule,
     MatFormFieldModule,
     MatIconModule,
-    CommonComponentModule
+    CommonComponentModule,
+    HeaderComponent
   ],
   declarations: [UserDashboardPage]
 })
