@@ -17,6 +17,7 @@ export class TransactionComponent  implements OnInit, OnDestroy {
   trasanctionForm: FormGroup = {} as FormGroup;
   billImage: any = {};
   userInfo: any = {};
+  showOptionalFields = false;
 
   transactionTypes = [
     { value: 'maintainance', viewValue: 'Maintainance' }

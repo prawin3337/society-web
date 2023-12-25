@@ -12,6 +12,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { AuthDirective } from "../directives/auth.directive";
 
@@ -32,7 +33,8 @@ import { AuthDirective } from "../directives/auth.directive";
     MatSelectModule,
     MatButtonModule,
     MatIconModule,
-    AuthDirective
+    AuthDirective,
+    MatExpansionModule
   ],
   exports: [
     CommonHeaderComponent,
