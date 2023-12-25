@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 
 import { Camera, CameraResultType, Photo } from '@capacitor/camera';
+import { AlertController } from '@ionic/angular';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import { MemberService } from 'src/app/services/member.service';
 import { environment } from 'src/environments/environment';
@@ -26,7 +27,8 @@ export class TransactionComponent  implements OnInit, OnDestroy {
   members:any[] = [];
 
   constructor(private http: HttpClient,
-    private memberService: MemberService) {
+    private memberService: MemberService,
+    private alertController: AlertController) {
     defineCustomElements(window);
   }
 
@@ -44,10 +46,10 @@ export class TransactionComponent  implements OnInit, OnDestroy {
 
   buildTransactionForm() {
     this.trasanctionForm = new FormGroup({
-      flatNo: new FormControl(this.userInfo?.flatNo, { validators: [Validators.required] }),
+      flatNo: new FormControl('', { validators: [Validators.required] }),
       amount: new FormControl(null, {validators: [Validators.required]}),
       description: new FormControl('', {}),
-      transactionCode: new FormControl('', { validators: [Validators.required, Validators.minLength(4)]}),
+      transactionCode: new FormControl('', { validators: [Validators.required, Validators.minLength(5)]}),
       transactionDate: new FormControl('',
         { validators: [
           Validators.required,
@@ -59,11 +61,20 @@ export class TransactionComponent  implements OnInit, OnDestroy {
             return date && date.match(dateRgex) ? null : {wrongDate: "Please enter valid date."} 
           }
         ]}),
-      transactionType: new FormControl('maintainance'),
+      transactionType: new FormControl(''),
       receiptNumber: new FormControl(''),
       photo: new FormControl(''),
-      isCredit: new FormControl(1)
+      isCredit: new FormControl()
     })
+
+    this.setDefaultValues();
+  }
+
+
+  setDefaultValues() {
+    this.trasanctionForm.get('flatNo')?.setValue(this.userInfo.flatNo);
+    this.trasanctionForm.get('isCredit')?.setValue(1);
+    this.trasanctionForm.get('transactionType')?.setValue('maintainance');
   }
 
   async takePicture() {
@@ -95,17 +106,37 @@ export class TransactionComponent  implements OnInit, OnDestroy {
         const tDate = new Date(data[key]);
         const newDate = `${tDate.getFullYear()}-${tDate.getMonth() + 1}-${tDate.getDate()}`;
         payload.append(key, newDate);
-        this.billImage = {};
       } else {
         await payload.append(key, data[key]);
       }
     }
 
     this.http.post(environment.apis.transaction, payload)
-      .subscribe(() => {
-        this.trasanctionForm.reset();
-        this.trasanctionForm.get('flatNo')?.setValue(this.userInfo.flatNo);
-      });;
+      .subscribe(async (res:any) => {
+        if(res.success) {
+          const alert = await this.alertController.create({
+            header: '',
+            subHeader: '',
+            message: 'Transaction updated.',
+            buttons: ['OK'],
+          });
+          await alert.present();
+
+          this.trasanctionForm.reset();
+          this.billImage = {};
+          this.setDefaultValues();
+
+          return;
+        }
+
+        const alert = await this.alertController.create({
+          header: '',
+          subHeader: '',
+          message: 'Something went wrong.',
+          buttons: ['OK'],
+        });
+        await alert.present();
+      });
   }
 
   onDestroy() {
