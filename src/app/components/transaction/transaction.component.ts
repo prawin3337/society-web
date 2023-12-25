@@ -46,8 +46,8 @@ export class TransactionComponent  implements OnInit, OnDestroy {
     this.trasanctionForm = new FormGroup({
       flatNo: new FormControl(this.userInfo?.flatNo, { validators: [Validators.required] }),
       amount: new FormControl(null, {validators: [Validators.required]}),
-      desctription: new FormControl('', {}),
-      transactionCode: new FormControl('', { validators: [Validators.required, Validators.minLength(5)]}),
+      description: new FormControl('', {}),
+      transactionCode: new FormControl('', { validators: [Validators.required, Validators.minLength(4)]}),
       transactionDate: new FormControl('',
         { validators: [
           Validators.required,
@@ -91,6 +91,11 @@ export class TransactionComponent  implements OnInit, OnDestroy {
     for (let key in data) {
       if (key == 'photo' && data[key]) {
         await payload.append(key, data[key], `.${this.billImage.format}`);
+      } else if (key == 'transactionDate') {
+        const tDate = new Date(data[key]);
+        const newDate = `${tDate.getFullYear()}-${tDate.getMonth() + 1}-${tDate.getDate()}`;
+        payload.append(key, newDate);
+        this.billImage = {};
       } else {
         await payload.append(key, data[key]);
       }
@@ -98,7 +103,8 @@ export class TransactionComponent  implements OnInit, OnDestroy {
 
     this.http.post(environment.apis.transaction, payload)
       .subscribe(() => {
-        this.billImage = {};
+        this.trasanctionForm.reset();
+        this.trasanctionForm.get('flatNo')?.setValue(this.userInfo.flatNo);
       });;
   }
 
