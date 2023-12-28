@@ -13,6 +13,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommonComponentModule } from 'src/app/components/common-component.module';
 import { HeaderComponent } from "../../components/header/header.component";
 
+import { ShowTransactionsComponent } from "../../components/show-transactions/show-transactions.component";
+
 @NgModule({
   imports: [
     IonicModule,
@@ -25,7 +27,8 @@ import { HeaderComponent } from "../../components/header/header.component";
     MatFormFieldModule,
     MatIconModule,
     CommonComponentModule,
-    HeaderComponent
+    HeaderComponent,
+    ShowTransactionsComponent
   ],
   declarations: [UserDashboardPage]
 })

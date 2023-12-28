@@ -3,7 +3,21 @@
 <ion-content [fullscreen]="true">
   <mat-accordion>
     <mat-expansion-panel
-      [expanded]="true"
+      [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <i class="bi bi-file-earmark-spreadsheet"></i>
+          Transaction's
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+  
+      <app-show-transactions></app-show-transactions>
+  
+    </mat-expansion-panel>
+  </mat-accordion>
+  <mat-accordion>
+    <mat-expansion-panel
+      [expanded]="false"
       (opened)="panelOpenState = true"
       (closed)="panelOpenState = false">
       <mat-expansion-panel-header>

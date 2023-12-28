@@ -9,6 +9,7 @@ export const environment = {
     validatePan: `${apiDomain}/api/login/validate-pan`,
     updatePassword: `${apiDomain}/api/auth/update-password`,
     flatNos: `${apiDomain}/api/flats`,
-    transaction: `${apiDomain}/api/transaction`
+    transaction: `${apiDomain}/api/transaction`,
+    transactionAll: `${apiDomain}/api/transaction/all`
   }
 };
