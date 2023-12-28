@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { AgGridModule } from 'ag-grid-angular'; // Angular Grid Logic
 import { ColDef, GridApi, GridReadyEvent } from 'ag-grid-community';
 import { TransactionsService } from "../../services/transactions.service";
@@ -17,6 +17,12 @@ import { RowOptionsComponent } from "./row-options/row-options.component";
   imports: [AgGridModule, IonicModule]
 })
 export class ShowTransactionsComponent  implements OnInit {
+
+  _filter: any;
+  @Input() set filter(value: any) {
+    this._filter = value;
+    this.transactionsService.getTransactions(value.flatNo);
+  }
 
   tableCol: ColDef[] = [];
   transactions = [];
@@ -68,12 +74,11 @@ export class ShowTransactionsComponent  implements OnInit {
   ngOnInit() {
     this.transactionsService.transactions
       .subscribe((event: any) => {
-        console.log(event);
         this.transactions = event.payload;
       });
 
-    const { flatNo } = this.memberService.getUserInfo();
-    this.transactionsService.getTransactions(flatNo);
+    // const { flatNo } = this.memberService.getUserInfo();
+    // this.transactionsService.getTransactions(flatNo);
   }
 
   async onSelectionChanged($event: any) {
@@ -96,7 +101,6 @@ export class ShowTransactionsComponent  implements OnInit {
   }
 
   async onApproveTransaction($event:any) {
-    console.log("obj= ", $event);
     this.tranValidationPopover.dismiss();
 
     const alert = await this.alertController.create({
@@ -124,7 +128,6 @@ export class ShowTransactionsComponent  implements OnInit {
   }
 
   onRejectTransaction($event: any) {
-    console.log("obj= ", $event);
     this.tranValidationPopover.dismiss();
   }
 

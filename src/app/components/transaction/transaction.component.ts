@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 
 import { Camera, CameraResultType, Photo } from '@capacitor/camera';
@@ -14,6 +14,11 @@ import { TransactionsService } from "../../services/transactions.service";
   styleUrls: ['./transaction.component.scss']
 })
 export class TransactionComponent  implements OnInit, OnDestroy {
+
+  _filter: any;
+  @Input() set filter(value: any) {
+    this._filter = value;
+  }
 
   trasanctionForm: FormGroup = {} as FormGroup;
   billImage: any = {};
@@ -80,7 +85,7 @@ export class TransactionComponent  implements OnInit, OnDestroy {
 
 
   setDefaultValues() {
-    this.trasanctionForm.get('flatNo')?.setValue(this.userInfo.flatNo);
+    this.trasanctionForm.get('flatNo')?.setValue(this._filter.flatNo);
     this.trasanctionForm.get('isCredit')?.setValue(1);
     this.trasanctionForm.get('transactionType')?.setValue('maintainance');
   }
@@ -120,7 +125,6 @@ export class TransactionComponent  implements OnInit, OnDestroy {
     }
 
     this.transactionsService.updateTransaction(payload);
-    this.transactionsService.getTransactions(this.userInfo.flatNo);
   }
 
   onDestroy() {

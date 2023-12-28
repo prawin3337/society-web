@@ -27,13 +27,15 @@ export class TransactionsService {
       });
   }
 
-  updateTransaction(payload: any) {
+  updateTransaction(payload: FormData) {
+    const flatNo = payload.get("flatNo");
     this.http.post(environment.apis.transaction, payload)
       .subscribe(async (res: any) => {
         let message = "Something went wrong. please try again.";
 
         if (res.success) {
           message = "Transaction updated.";
+          this.getTransactions(flatNo as string);
         }
 
         const toast = await this.toastController.create({

@@ -1,7 +1,7 @@
 import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserDashboardPage } from './user-dashboard.page';
 
 import { UserDashboardRoutingModule } from './user-dashboard-routing.module';
@@ -14,21 +14,28 @@ import { CommonComponentModule } from 'src/app/components/common-component.modul
 import { HeaderComponent } from "../../components/header/header.component";
 
 import { ShowTransactionsComponent } from "../../components/show-transactions/show-transactions.component";
+import { MatCardModule } from '@angular/material/card';
+import { MatSelectModule } from '@angular/material/select';
+import { AuthDirective } from 'src/app/directives/auth.directive';
 
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     MatGridListModule,
     UserDashboardRoutingModule,
     MatExpansionModule,
     MatInputModule,
     MatFormFieldModule,
     MatIconModule,
+    MatCardModule,
+    MatSelectModule,
     CommonComponentModule,
     HeaderComponent,
-    ShowTransactionsComponent
+    ShowTransactionsComponent,
+    AuthDirective
   ],
   declarations: [UserDashboardPage]
 })
