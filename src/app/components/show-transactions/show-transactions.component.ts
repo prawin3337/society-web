@@ -66,13 +66,14 @@ export class ShowTransactionsComponent  implements OnInit {
   }
 
   ngOnInit() {
-    const { flatNo } = this.memberService.getUserInfo();
-    this.transactionsService.getTransactions(flatNo)
-      .subscribe((res:any) => {
-        if (res && res.success) {
-          this.transactions  = res.data;
-        }
+    this.transactionsService.transactions
+      .subscribe((event: any) => {
+        console.log(event);
+        this.transactions = event.payload;
       });
+
+    const { flatNo } = this.memberService.getUserInfo();
+    this.transactionsService.getTransactions(flatNo);
   }
 
   async onSelectionChanged($event: any) {

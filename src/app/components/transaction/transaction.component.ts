@@ -3,10 +3,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 
 import { Camera, CameraResultType, Photo } from '@capacitor/camera';
-import { AlertController } from '@ionic/angular';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import { MemberService } from 'src/app/services/member.service';
 import { environment } from 'src/environments/environment';
+import { TransactionsService } from "../../services/transactions.service";
 
 @Component({
   selector: 'app-transaction',
@@ -28,7 +28,7 @@ export class TransactionComponent  implements OnInit, OnDestroy {
 
   constructor(private http: HttpClient,
     private memberService: MemberService,
-    private alertController: AlertController) {
+    private transactionsService: TransactionsService) {
     defineCustomElements(window);
   }
 
@@ -41,6 +41,14 @@ export class TransactionComponent  implements OnInit, OnDestroy {
       });
 
     this.userInfo = this.memberService.getUserInfo();
+
+    this.transactionsService.transactions
+      .subscribe(async (event: any) => {
+        this.trasanctionForm.reset();
+        this.billImage = {};
+        this.setDefaultValues();
+      });
+
     this.buildTransactionForm();
   }
 
@@ -111,32 +119,8 @@ export class TransactionComponent  implements OnInit, OnDestroy {
       }
     }
 
-    this.http.post(environment.apis.transaction, payload)
-      .subscribe(async (res:any) => {
-        if(res.success) {
-          const alert = await this.alertController.create({
-            header: '',
-            subHeader: '',
-            message: 'Transaction updated.',
-            buttons: ['OK'],
-          });
-          await alert.present();
-
-          this.trasanctionForm.reset();
-          this.billImage = {};
-          this.setDefaultValues();
-
-          return;
-        }
-
-        const alert = await this.alertController.create({
-          header: '',
-          subHeader: '',
-          message: 'Something went wrong.',
-          buttons: ['OK'],
-        });
-        await alert.present();
-      });
+    this.transactionsService.updateTransaction(payload);
+    this.transactionsService.getTransactions(this.userInfo.flatNo);
   }
 
   onDestroy() {

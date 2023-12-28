@@ -1,20 +1,47 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { ToastController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransactionsService {
 
-  transactions: Observable<any[]>;
+  transactions: Subject<any> = new Subject();
 
-  constructor(private http: HttpClient) {
-    this.transactions = new Observable();
+  constructor(private http: HttpClient, private toastController: ToastController) {
+    
   }
 
   getTransactions(flatNo: string) {
-    return this.http.get(environment.apis.transactionAll, {params: {flatNo}});
+    return this.http.get(environment.apis.transactionAll, {params: {flatNo}})
+      .subscribe((res:any) => {
+        if (res.success) {
+          this.transactions.next({
+            type: "fetch",
+            payload: res.data
+          });
+        }
+      });
+  }
+
+  updateTransaction(payload: any) {
+    this.http.post(environment.apis.transaction, payload)
+      .subscribe(async (res: any) => {
+        let message = "Something went wrong. please try again.";
+
+        if (res.success) {
+          message = "Transaction updated.";
+        }
+
+        const toast = await this.toastController.create({
+          message: message,
+          duration: 1500,
+          position: 'top',
+        });
+        await toast.present();
+      });
   }
 }
