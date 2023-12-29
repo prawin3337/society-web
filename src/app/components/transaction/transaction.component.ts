@@ -124,7 +124,11 @@ export class TransactionComponent  implements OnInit, OnDestroy {
       }
     }
 
-    this.transactionsService.updateTransaction(payload);
+    this.transactionsService.updateTransaction(payload)
+      .subscribe(async (data: any) => {
+        const { flatNo, financYear } = this._filter;
+        this.transactionsService.getTransactions(flatNo, financYear);
+      });
   }
 
   onDestroy() {

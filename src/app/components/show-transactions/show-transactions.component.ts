@@ -20,8 +20,9 @@ export class ShowTransactionsComponent  implements OnInit {
 
   _filter: any;
   @Input() set filter(value: any) {
+    const { flatNo, financYear } = value;
     this._filter = value;
-    this.transactionsService.getTransactions(value.flatNo);
+    this.transactionsService.getTransactions(flatNo, financYear);
   }
 
   tableCol: ColDef[] = [];

@@ -35,13 +35,10 @@ export class UserDashboardPage {
 
     this.filterForm.setValue({
       flatNo: this.userInfo.flatNo,
-      financYear: "22-23"
+      financYear: "2023-2024"
     })
 
-    this.filter = {
-      flatNo: this.userInfo.flatNo,
-      financYear: "22-23"
-    }
+    this.filter = this.filterForm.value;
 
     this.filterForm.valueChanges
       .subscribe(() => {
