@@ -60,7 +60,7 @@ export class TransactionComponent  implements OnInit, OnDestroy {
   buildTransactionForm() {
     this.trasanctionForm = new FormGroup({
       flatNo: new FormControl('', { validators: [Validators.required] }),
-      amount: new FormControl(null, {validators: [Validators.required]}),
+      creditAmount: new FormControl(null, {validators: [Validators.required]}),
       description: new FormControl('', {}),
       transactionCode: new FormControl('', { validators: [Validators.required, Validators.minLength(5)]}),
       transactionDate: new FormControl('',

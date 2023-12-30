@@ -44,7 +44,7 @@ export class ShowTransactionsComponent  implements OnInit {
     private popoverController: PopoverController,
     private alertController: AlertController) {
     this.tableCol = [
-      { field: "amount", width: 100 },
+      { field: "creditAmount", width: 100 },
       {
         field: "transactionDate",
         headerName: "Trans Date",
