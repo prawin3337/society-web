@@ -12,3 +12,8 @@ mat-form-field {
 .hide-optional-fields {
     display: none;
 }
+
+form {
+    max-width: 600px;
+    margin: auto;
+}

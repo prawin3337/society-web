@@ -45,13 +45,14 @@ export class ShowMaintainanceComponent  implements OnInit {
         cellRenderer: (params: any) => handleNullColumn(params.value)
       },
       {
-        field: "penaltyMonCnt",
-        headerName: "Penalty month count",
+        field: "penaltyFromTo",
+        width: 400,
+        headerName: "Penalty from to",
         cellRenderer: (params: any) => handleNullColumn(params.value)
       },
       {
-        field: "penaltyFromTo",
-        headerName: "Penalty from to",
+        field: "penaltyMonCnt",
+        headerName: "Penalty month count",
         cellRenderer: (params: any) => handleNullColumn(params.value)
       }
     ]
