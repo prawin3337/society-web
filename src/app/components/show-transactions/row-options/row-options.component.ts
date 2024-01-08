@@ -15,6 +15,8 @@ export class RowOptionsComponent  implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log("data=", this.data);
+  }
 
 }

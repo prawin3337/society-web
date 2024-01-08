@@ -8,6 +8,7 @@ import { formatDate, handleNullColumn } from "../../util";
 import { AlertController, IonicModule, PopoverController } from '@ionic/angular';
 
 import { RowOptionsComponent } from "./row-options/row-options.component";
+import { MaintainanceService } from 'src/app/services/maintainance.service';
 
 @Component({
   selector: 'app-show-transactions',
@@ -32,17 +33,18 @@ export class ShowTransactionsComponent  implements OnInit {
   }
   rowClassRules = {
     // apply green to 2008
-    'approved-trancation': (params: any) => { return params.data.isAppoved === "y" },
+    'approved-trancation': (params: any) => { return params.data.isApproved === "y" },
 
     // apply red to 2000
-    'rejected-trancation': (params: any) => { return params.data.isAppoved === "n" }
+    'rejected-trancation': (params: any) => { return params.data.isApproved === "n" }
   };
   tranValidationPopover: any;
 
   constructor(private transactionsService: TransactionsService,
     private memberService: MemberService,
     private popoverController: PopoverController,
-    private alertController: AlertController) {
+    private alertController: AlertController,
+    private maintenanceService: MaintainanceService) {
     this.tableCol = [
       { field: "creditAmount", width: 100 },
       {
@@ -97,6 +99,9 @@ export class ShowTransactionsComponent  implements OnInit {
     if (userType !== "admin") return;
 
     const selectedData = $event.api.getSelectedRows();
+    if (selectedData.length <= 0 || !selectedData[0]) return;
+    if (selectedData[0].isApproved == 'y' || selectedData[0].isApproved == 'n') return;
+
     await this.presentPopover(selectedData);
   }
 
@@ -112,7 +117,10 @@ export class ShowTransactionsComponent  implements OnInit {
   }
 
   async onApproveTransaction($event:any) {
-    this.tranValidationPopover.dismiss();
+    await this.tranValidationPopover.dismiss();
+
+    const { type: userType } = this.memberService.getUserInfo();
+    if (userType != "admin") return;
 
     const alert = await this.alertController.create({
       header: 'Alert!',
@@ -122,15 +130,13 @@ export class ShowTransactionsComponent  implements OnInit {
         {
           text: 'Cancel',
           role: 'cancel',
-          handler: () => {
-            console.log('Alert canceled');
-          },
+          handler: () => {},
         },
         {
           text: 'OK',
           role: 'confirm',
           handler: () => {
-            console.log('Alert confirmed');
+            this.approveTransaction($event.id, 'y', this._filter.flatNo);
           },
         }
       ],
@@ -138,8 +144,39 @@ export class ShowTransactionsComponent  implements OnInit {
     await alert.present();
   }
 
-  onRejectTransaction($event: any) {
-    this.tranValidationPopover.dismiss();
+  async onRejectTransaction($event: any) {
+    await this.tranValidationPopover.dismiss();
+
+    const { type: userType } = this.memberService.getUserInfo();
+    if (userType != "admin") return;
+
+    const alert = await this.alertController.create({
+      header: 'Alert!',
+      subHeader: '',
+      message: 'Reject transaction?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => { },
+        },
+        {
+          text: 'OK',
+          role: 'confirm',
+          handler: () => {
+            this.approveTransaction($event.id, 'n', this._filter.flatNo);
+          },
+        }
+      ],
+    });
+    await alert.present();
+  }
+
+  private approveTransaction(id: number, isApproved: string, flatNo: string) {
+    this.transactionsService.approveTransaction(id, isApproved, flatNo).subscribe(() => {
+      this.transactionsService.getTransactions(flatNo, this._filter.financYear);
+      this.maintenanceService.fetchMaintenance(flatNo, this._filter.financYear);
+    });
   }
 
   onGridReady(params: GridReadyEvent<any>) {

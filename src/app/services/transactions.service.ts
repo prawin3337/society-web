@@ -49,4 +49,8 @@ export class TransactionsService {
         await toast.present();
       }));
   }
+
+  approveTransaction(id: number, isApproved: string, flatNo: string) {
+    return this.http.post(environment.apis.transactionApprove, { id, isApproved, flatNo });
+  }
 }

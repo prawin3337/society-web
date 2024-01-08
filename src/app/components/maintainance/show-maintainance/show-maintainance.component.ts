@@ -22,6 +22,10 @@ export class ShowMaintainanceComponent  implements OnInit {
   defaultColDef = {
     resizable: false
   }
+  rowClassRules = {
+    // apply red to 2000
+    'penalty': (params: any) => { return params.data.penaltyAmt > 0 }
+  };
 
   constructor(private maintainanceService: MaintainanceService) {
     this.tableCol = [
