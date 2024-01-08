@@ -18,6 +18,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { AuthDirective } from 'src/app/directives/auth.directive';
 
+import { MaintainanceModule } from "../../components/maintainance/maintainance.module";
+
 @NgModule({
   imports: [
     IonicModule,
@@ -35,7 +37,8 @@ import { AuthDirective } from 'src/app/directives/auth.directive';
     CommonComponentModule,
     HeaderComponent,
     ShowTransactionsComponent,
-    AuthDirective
+    AuthDirective,
+    MaintainanceModule
   ],
   declarations: [UserDashboardPage]
 })

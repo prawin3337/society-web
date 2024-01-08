@@ -4,7 +4,7 @@ import { ColDef, GridApi, GridReadyEvent } from 'ag-grid-community';
 import { TransactionsService } from "../../services/transactions.service";
 import { MemberService } from 'src/app/services/member.service';
 
-import { formatDate } from "../../util";
+import { formatDate, handleNullColumn } from "../../util";
 import { AlertController, IonicModule, PopoverController } from '@ionic/angular';
 
 import { RowOptionsComponent } from "./row-options/row-options.component";
@@ -25,8 +25,8 @@ export class ShowTransactionsComponent  implements OnInit {
     this.transactionsService.getTransactions(flatNo, financYear);
   }
 
-  tableCol: ColDef[] = [];
   transactions = [];
+  tableCol: ColDef[] = [];
   defaultColDef = {
     resizable: false
   }
@@ -54,17 +54,27 @@ export class ShowTransactionsComponent  implements OnInit {
           return formatDate(params.value)
         }
       },
-      { field: "transactionCode", headerName: "Trans Code/Ref" },
-      { field: "receiptNumber" },
-      { field: "description" },
-      { 
-        field: "date",
-        headerName: "Rec Date",
-        cellRenderer: (params:any) => {
-          // put the value in bold
-          return formatDate(params.value)
-        }
+      {
+        field: "transactionCode",
+        headerName: "Trans Code/Ref",
+        cellRenderer: (params: any) => handleNullColumn(params.value)
+      },
+      {
+        field: "receiptNumber",
+        cellRenderer: (params: any) => handleNullColumn(params.value)
+      },
+      {
+        field: "description",
+        cellRenderer: (params: any) => handleNullColumn(params.value)
       }
+      // { 
+      //   field: "date",
+      //   headerName: "Rec Date",
+      //   cellRenderer: (params:any) => {
+      //     // put the value in bold
+      //     return formatDate(params.value)
+      //   }
+      // }
       // { field: "photo" },
       // { field: "userId" },
       // { field: "type" },

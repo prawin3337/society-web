@@ -10,6 +10,7 @@ export const environment = {
     updatePassword: `${apiDomain}/api/auth/update-password`,
     flatNos: `${apiDomain}/api/flats`,
     transaction: `${apiDomain}/api/transaction`,
-    transactionAll: `${apiDomain}/api/transaction/all`
+    transactionAll: `${apiDomain}/api/transaction/all`,
+    maintenanceAll: `${apiDomain}/api/maintenance/all`
   }
 };

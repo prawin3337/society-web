@@ -15,7 +15,7 @@ export class TokenService {
 
   addToken(key: string, value: string) {
     const myDate: Date = new Date();
-    myDate.setMinutes(myDate.getMinutes() + 15);
+    myDate.setMinutes(myDate.getMinutes() + 60*8);
     this.cookieService.set(key, value, { expires: myDate });
   }
 

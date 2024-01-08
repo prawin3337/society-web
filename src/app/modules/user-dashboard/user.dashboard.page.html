@@ -24,6 +24,38 @@
       </form>
     </mat-card-content>
   </mat-card>
+
+  <mat-accordion>
+    <mat-expansion-panel [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <i class="bi bi-file-earmark-spreadsheet"></i> 
+          Maintainance
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+  
+      <app-show-maintainance *ngIf="userInfo.flatNo" [filter]="filter"></app-show-maintainance>
+  
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <mat-accordion>
+    <mat-expansion-panel [expanded]="false" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <i class="bi bi-cash-coin me-1"></i>
+          Update transaction
+        </mat-panel-title>
+        <!-- <mat-panel-description>
+            Currently I am {{panelOpenState ? 'open' : 'closed'}}
+          </mat-panel-description> -->
+      </mat-expansion-panel-header>
+  
+      <app-transaction *ngIf="userInfo.flatNo" [filter]="filter"></app-transaction>
+  
+    </mat-expansion-panel>
+  </mat-accordion>
+
   <mat-accordion>
     <mat-expansion-panel
       [expanded]="true">
@@ -36,25 +68,6 @@
   
       <app-show-transactions *ngIf="userInfo.flatNo" [filter]="filter"></app-show-transactions>
   
-    </mat-expansion-panel>
-  </mat-accordion>
-  <mat-accordion>
-    <mat-expansion-panel
-      [expanded]="false"
-      (opened)="panelOpenState = true"
-      (closed)="panelOpenState = false">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          <i class="bi bi-cash-coin me-1"></i>
-          Update transaction
-        </mat-panel-title>
-        <!-- <mat-panel-description>
-          Currently I am {{panelOpenState ? 'open' : 'closed'}}
-        </mat-panel-description> -->
-      </mat-expansion-panel-header>
-
-      <app-transaction *ngIf="userInfo.flatNo" [filter]="filter"></app-transaction>
-
     </mat-expansion-panel>
   </mat-accordion>
 </ion-content>
