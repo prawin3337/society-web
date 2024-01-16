@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MaintainanceService } from "../../../services/maintainance.service";
 import { ColDef } from 'ag-grid-community';
 import { formatDate, handleNullColumn } from 'src/app/util';
@@ -16,6 +16,8 @@ export class ShowMaintainanceComponent  implements OnInit {
     this._filter = value;
     this.maintainanceService.fetchMaintenance(flatNo, financYear);
   }
+
+  @Output() maintainaceDetails = new EventEmitter();
 
   maintainance = [];
   tableCol: ColDef[] = [];
@@ -66,8 +68,20 @@ export class ShowMaintainanceComponent  implements OnInit {
     this.maintainanceService.maintenance
       .subscribe((data) => {
         this.maintainance = data.payload;
-        console.log(this.maintainance);
+        this.maintainaceDetails.emit(this.getTotalMaintAmount(this.maintainance));
       });
+  }
+
+  getTotalMaintAmount(data: any[]) {
+    let totalPenalty = 0;
+    let totalMaintainance = 0;
+
+    data.forEach((obj:any) => {
+      totalMaintainance += obj.maintainanceAmt;
+      totalPenalty += obj.penaltyAmt;
+    });
+
+    return({totalMaintainance, totalPenalty})
   }
 
 }

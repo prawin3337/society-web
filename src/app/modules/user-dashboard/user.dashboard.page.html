@@ -29,29 +29,18 @@
     <mat-expansion-panel [expanded]="true">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          <i class="bi bi-file-earmark-spreadsheet"></i> 
+          <i class="bi bi-file-earmark-spreadsheet"></i>&nbsp;
           Maintainance
         </mat-panel-title>
+        <mat-panel-description>
+          Total Maintainance: {{maintainaceDetails.totalMaintainance}} <i class="bi bi-currency-rupee"></i>|
+          Total Penalty: {{maintainaceDetails.totalPenalty}} <i class="bi bi-currency-rupee"></i>
+        </mat-panel-description>
       </mat-expansion-panel-header>
   
-      <app-show-maintainance *ngIf="userInfo.flatNo" [filter]="filter"></app-show-maintainance>
-  
-    </mat-expansion-panel>
-  </mat-accordion>
-
-  <mat-accordion>
-    <mat-expansion-panel [expanded]="false" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          <i class="bi bi-cash-coin me-1"></i>
-          Update transaction
-        </mat-panel-title>
-        <!-- <mat-panel-description>
-            Currently I am {{panelOpenState ? 'open' : 'closed'}}
-          </mat-panel-description> -->
-      </mat-expansion-panel-header>
-  
-      <app-transaction *ngIf="userInfo.flatNo" [filter]="filter"></app-transaction>
+      <app-show-maintainance *ngIf="userInfo.flatNo"
+        [filter]="filter"
+        (maintainaceDetails)="onMaintainaceDetails($event)"></app-show-maintainance>
   
     </mat-expansion-panel>
   </mat-accordion>
@@ -61,12 +50,36 @@
       [expanded]="true">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          <i class="bi bi-file-earmark-spreadsheet"></i>
+          <i class="bi bi-file-earmark-spreadsheet"></i>&nbsp;
           Transaction's
         </mat-panel-title>
+        <mat-panel-description>
+          Total Credit Amount: {{transactionDet.creditAmt}} <i class="bi bi-currency-rupee"></i>|
+          Total Approved Amount: {{transactionDet.approvedAmt}} <i class="bi bi-currency-rupee"></i>
+        </mat-panel-description>
       </mat-expansion-panel-header>
   
-      <app-show-transactions *ngIf="userInfo.flatNo" [filter]="filter"></app-show-transactions>
+      <app-show-transactions *ngIf="userInfo.flatNo"
+        [filter]="filter"
+        (transactionDet)="onTransactionDet($event)"></app-show-transactions>
+  
+    </mat-expansion-panel>
+  </mat-accordion>
+
+
+  <mat-accordion>
+    <mat-expansion-panel [expanded]="false" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <i class="bi bi-cash-coin me-1"></i>&nbsp;
+          Update transaction
+        </mat-panel-title>
+        <!-- <mat-panel-description>
+              Currently I am {{panelOpenState ? 'open' : 'closed'}}
+            </mat-panel-description> -->
+      </mat-expansion-panel-header>
+  
+      <app-transaction *ngIf="userInfo.flatNo" [filter]="filter"></app-transaction>
   
     </mat-expansion-panel>
   </mat-accordion>

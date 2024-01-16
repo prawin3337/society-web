@@ -21,6 +21,16 @@ export class UserDashboardPage {
     financYear: new FormControl('')
   });
 
+  maintainaceDetails = {
+    totalMaintainance: 0,
+    totalPenalty: 0
+  };
+
+  transactionDet = {
+    creditAmt: 0,
+    approvedAmt: 0
+  }
+
   constructor(private memberService: MemberService) {}
 
   ngOnInit() {
@@ -45,6 +55,14 @@ export class UserDashboardPage {
         this.filter = this.filterForm.value;
         // this.onFilterChange.emit(this.filterForm.value);
       });
+  }
+
+  onMaintainaceDetails(event: any) {
+    this.maintainaceDetails = event;
+  }
+
+  onTransactionDet(event: any) {
+    this.transactionDet = event;
   }
 
 }

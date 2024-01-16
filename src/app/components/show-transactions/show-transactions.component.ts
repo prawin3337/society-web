@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { AgGridModule } from 'ag-grid-angular'; // Angular Grid Logic
 import { ColDef, GridApi, GridReadyEvent } from 'ag-grid-community';
 import { TransactionsService } from "../../services/transactions.service";
@@ -25,6 +25,8 @@ export class ShowTransactionsComponent  implements OnInit {
     this._filter = value;
     this.transactionsService.getTransactions(flatNo, financYear);
   }
+
+  @Output() transactionDet = new EventEmitter();
 
   transactions = [];
   tableCol: ColDef[] = [];
@@ -88,10 +90,23 @@ export class ShowTransactionsComponent  implements OnInit {
     this.transactionsService.transactions
       .subscribe((event: any) => {
         this.transactions = event.payload;
+        this.transactionDet.emit(this.getTransactionDet(this.transactions))
       });
 
     // const { flatNo } = this.memberService.getUserInfo();
     // this.transactionsService.getTransactions(flatNo);
+  }
+
+  private getTransactionDet(data: any[]) {
+    let creditAmt = 0;
+    let approvedAmt = 0;
+
+    data.forEach((transaction) => {
+      creditAmt += Number(transaction.creditAmount);
+      approvedAmt = (transaction.isApproved == "y") ? (approvedAmt + Number(transaction.creditAmount)) : approvedAmt;
+    });
+
+    return ({ creditAmt, approvedAmt });
   }
 
   async onSelectionChanged($event: any) {
