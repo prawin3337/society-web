@@ -91,7 +91,11 @@ export class ShowMaintainanceComponent  implements OnInit {
   }
 
   onBtExport() {
-    this.gridApi.exportDataAsCsv();
+    const { flatNo, financYear } = this._filter;
+    const params = {
+      fileName: `Flat_No-${flatNo}-${financYear}-maintainance.csv`
+    };
+    this.gridApi.exportDataAsCsv(params);
   }
 
 }

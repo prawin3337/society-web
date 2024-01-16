@@ -6,6 +6,7 @@ import { MemberService } from 'src/app/services/member.service';
 
 import { formatDate, handleNullColumn } from "../../util";
 import { AlertController, IonicModule, PopoverController } from '@ionic/angular';
+import { MatButtonModule } from '@angular/material/button';
 
 import { RowOptionsComponent } from "./row-options/row-options.component";
 import { MaintainanceService } from 'src/app/services/maintainance.service';
@@ -15,7 +16,7 @@ import { MaintainanceService } from 'src/app/services/maintainance.service';
   templateUrl: './show-transactions.component.html',
   styleUrls: ['./show-transactions.component.scss'],
   standalone: true,
-  imports: [AgGridModule, IonicModule]
+  imports: [AgGridModule, IonicModule, MatButtonModule]
 })
 export class ShowTransactionsComponent  implements OnInit {
 
@@ -201,7 +202,11 @@ export class ShowTransactionsComponent  implements OnInit {
   }
 
   onBtExport() {
-    this.gridApi.exportDataAsCsv();
+    const { flatNo, financYear } = this._filter;
+    const params = {
+      fileName: `Flat_No-${flatNo}-${financYear}-transactions.csv`
+    };
+    this.gridApi.exportDataAsCsv(params);
   }
 
 }
