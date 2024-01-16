@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MaintainanceService } from "../../../services/maintainance.service";
-import { ColDef } from 'ag-grid-community';
+import { ColDef, GridApi, GridReadyEvent } from 'ag-grid-community';
 import { formatDate, handleNullColumn } from 'src/app/util';
 
 @Component({
@@ -18,6 +18,8 @@ export class ShowMaintainanceComponent  implements OnInit {
   }
 
   @Output() maintainaceDetails = new EventEmitter();
+
+  private gridApi!: GridApi<any>;
 
   maintainance = [];
   tableCol: ColDef[] = [];
@@ -82,6 +84,14 @@ export class ShowMaintainanceComponent  implements OnInit {
     });
 
     return({totalMaintainance, totalPenalty})
+  }
+
+  onGridReady(params: GridReadyEvent<any>) {
+    this.gridApi = params.api;
+  }
+
+  onBtExport() {
+    this.gridApi.exportDataAsCsv();
   }
 
 }

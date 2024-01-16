@@ -1,3 +1,6 @@
+<div>
+  <button class="float-end" mat-button (click)="onBtExport()">Export</button>
+</div>
 <ag-grid-angular
   style="width: 100%; height: 200px;"
   [rowData]="maintainance"
@@ -6,5 +9,6 @@
   [rowSelection]="'single'"
   [paginationPageSize]="5"
   [rowClassRules]="rowClassRules"
-  [columnDefs]="tableCol">
+  [columnDefs]="tableCol"
+  (gridReady)="onGridReady($event)">
 </ag-grid-angular>

@@ -19,6 +19,8 @@ import { MaintainanceService } from 'src/app/services/maintainance.service';
 })
 export class ShowTransactionsComponent  implements OnInit {
 
+  private gridApi!: GridApi<any>;
+
   _filter: any;
   @Input() set filter(value: any) {
     const { flatNo, financYear } = value;
@@ -195,7 +197,11 @@ export class ShowTransactionsComponent  implements OnInit {
   }
 
   onGridReady(params: GridReadyEvent<any>) {
+    this.gridApi = params.api;
+  }
 
+  onBtExport() {
+    this.gridApi.exportDataAsCsv();
   }
 
 }
