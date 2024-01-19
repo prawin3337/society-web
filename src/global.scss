@@ -46,3 +46,12 @@
 .rejected-trancation, .penalty {
     color: red;
 }
+
+.grid-container {
+    position: relative;
+    .grid-export-btn {
+        position: absolute;
+        bottom: -10px;
+    }
+}
+

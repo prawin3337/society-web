@@ -1,15 +1,9 @@
-<div>
-  <button class="float-end" mat-button (click)="onBtExport()">Export</button>
+<div class="grid-container">
+  <ag-grid-angular style="width: 100%; height: 200px;" [rowData]="transactions" [pagination]="true"
+    [defaultColDef]="defaultColDef" [rowSelection]="'single'" [paginationPageSize]="5" [columnDefs]="tableCol"
+    [rowClassRules]="rowClassRules" (selectionChanged)="onSelectionChanged($event)" (gridReady)="onGridReady($event)">
+  </ag-grid-angular>
+  <div class="grid-export-btn">
+    <button mat-button (click)="onBtExport()"><i class="bi bi-file-earmark-arrow-down"></i></button>
+  </div>
 </div>
-<ag-grid-angular
-  style="width: 100%; height: 200px;"
-  [rowData]="transactions"
-  [pagination]="true"
-  [defaultColDef]="defaultColDef"
-  [rowSelection]="'single'"
-  [paginationPageSize]="5"
-  [columnDefs]="tableCol"
-  [rowClassRules]="rowClassRules"
-  (selectionChanged)="onSelectionChanged($event)"
-  (gridReady)="onGridReady($event)">
-</ag-grid-angular>
