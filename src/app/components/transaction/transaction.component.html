@@ -1,4 +1,4 @@
-<form [formGroup]="trasanctionForm" (submit)="onSubmit()">
+<form [formGroup]="transactionForm" (submit)="onSubmit()">
   <!-- <mat-form-field name="flatNo" *ngIf="members.length" authDirective>
     <mat-label>Flat</mat-label>
     <mat-select [value]="userInfo.flatNo" formControlName="flatNo">
@@ -15,11 +15,16 @@
             <mat-error>{{'Error'}}</mat-error>
           } -->
   </mat-form-field>
+
+  <mat-form-field authDirective>
+    <mat-label>Debit Amount</mat-label>
+    <input matInput placeholder="" type="number" formControlName="debitAmount" name="debitAmount">
+  </mat-form-field>
   
   <mat-form-field>
     <mat-label>Transaction No/Cash</mat-label>
     <input matInput placeholder="Referance No/ID." formControlName="transactionCode" name="transactionCode">
-    <mat-hint>Minimum last 5 caractors/digits.</mat-hint>
+    <mat-hint>Minimum last 4 caractors/digits.</mat-hint>
   </mat-form-field>
 
   <mat-form-field>
@@ -31,7 +36,7 @@
   </mat-form-field>
 
   <!-- Optional fields-->
-  <div class="text-end optional-fields">
+  <div class="text-end optional-fields" *ngIf="userInfo.type != 'admin'">
     <a mat-button class="fw-lighter" (click)="showOptionalFields=!showOptionalFields">
       <i class="bi bi-chevron-expand"></i>
       Optional fields</a>
@@ -67,5 +72,5 @@
     </div>
   </div>
 
-  <button [disabled]="!trasanctionForm.valid" type="submit" mat-raised-button color="primary">Submit</button>
+  <button [disabled]="disableSubmitBtn()" type="submit" mat-raised-button color="primary">Submit</button>
 </form>

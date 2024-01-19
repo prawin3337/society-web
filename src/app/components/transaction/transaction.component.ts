@@ -7,6 +7,7 @@ import { defineCustomElements } from '@ionic/pwa-elements/loader';
 import { MemberService } from 'src/app/services/member.service';
 import { environment } from 'src/environments/environment';
 import { TransactionsService } from "../../services/transactions.service";
+import { debounce, debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-transaction',
@@ -20,7 +21,7 @@ export class TransactionComponent  implements OnInit, OnDestroy {
     this._filter = value;
   }
 
-  trasanctionForm: FormGroup = {} as FormGroup;
+  transactionForm: FormGroup = {} as FormGroup;
   billImage: any = {};
   userInfo: any = {};
   showOptionalFields = false;
@@ -49,20 +50,32 @@ export class TransactionComponent  implements OnInit, OnDestroy {
 
     this.transactionsService.transactions
       .subscribe(async (event: any) => {
-        this.trasanctionForm.reset();
+        this.transactionForm.reset();
         this.billImage = {};
         this.setDefaultValues();
       });
 
     this.buildTransactionForm();
+
+    if (this.userInfo.type === "admin") {
+      this.showOptionalFields = true;
+      this.transactionTypes.push({ value: 'expense', viewValue: 'Expense' });
+    } else {
+      const creditAmountCtrl = this.transactionForm.get("creditAmount");
+      creditAmountCtrl?.addValidators(Validators.required);
+      creditAmountCtrl?.updateValueAndValidity();
+
+      this.transactionTypes = this.transactionTypes.filter((tType: any) => !["expense"].includes(tType.value));
+    }
   }
 
   buildTransactionForm() {
-    this.trasanctionForm = new FormGroup({
+    this.transactionForm = new FormGroup({
       flatNo: new FormControl('', { validators: [Validators.required] }),
-      creditAmount: new FormControl(null, {validators: [Validators.required]}),
+      creditAmount: new FormControl(null),
+      debitAmount: new FormControl(null),
       description: new FormControl('', {}),
-      transactionCode: new FormControl('', { validators: [Validators.required, Validators.minLength(5)]}),
+      transactionCode: new FormControl('', { validators: [Validators.required, Validators.minLength(4)]}),
       transactionDate: new FormControl('',
         { validators: [
           Validators.required,
@@ -74,20 +87,38 @@ export class TransactionComponent  implements OnInit, OnDestroy {
             return date && date.match(dateRgex) ? null : {wrongDate: "Please enter valid date."} 
           }
         ]}),
-      transactionType: new FormControl(''),
+      transactionType: new FormControl('', {validators: [Validators.required]}),
       receiptNumber: new FormControl(''),
       photo: new FormControl(''),
       isCredit: new FormControl()
     })
 
     this.setDefaultValues();
+
+    this.transactionForm.valueChanges
+      .pipe(debounceTime(10))
+      .subscribe(val => {
+        if(val.creditAmount != null) {
+          this.transactionForm.get("debitAmount")?.disable();
+        } else {
+          this.transactionForm.get("debitAmount")?.enable();
+        }
+
+        if (val.debitAmount != null) {
+          this.transactionForm.get("creditAmount")?.disable();
+        } else {
+          this.transactionForm.get("creditAmount")?.enable();
+        }
+      });
   }
 
 
   setDefaultValues() {
-    this.trasanctionForm.get('flatNo')?.setValue(this._filter.flatNo);
-    this.trasanctionForm.get('isCredit')?.setValue(1);
-    this.trasanctionForm.get('transactionType')?.setValue('maintainance');
+    this.transactionForm.get('flatNo')?.setValue(this._filter.flatNo);
+    this.transactionForm.get('isCredit')?.setValue(1);
+
+    const transactionType = this.userInfo.type === "admin" ? "" : "maintainance"
+    this.transactionForm.get('transactionType')?.setValue(transactionType);
   }
 
   async takePicture() {
@@ -102,7 +133,7 @@ export class TransactionComponent  implements OnInit, OnDestroy {
         this.billImage = image;
         const base64Response = await fetch(image.dataUrl);
         const blob = await base64Response.blob();
-        this.trasanctionForm.get('photo')?.setValue(blob);
+        this.transactionForm.get('photo')?.setValue(blob);
       }
     } catch (err) {
       console.error(err);
@@ -110,7 +141,7 @@ export class TransactionComponent  implements OnInit, OnDestroy {
   }
 
   async onSubmit() {
-    const data = this.trasanctionForm.value;
+    const data = this.transactionForm.value;
     const payload = new FormData();
     for (let key in data) {
       if (key == 'photo' && data[key]) {
@@ -134,7 +165,7 @@ export class TransactionComponent  implements OnInit, OnDestroy {
   onDestroy() {
     this.userInfo = {};
     this.billImage = {};
-    this.trasanctionForm.reset();
+    this.transactionForm.reset();
   }
 
   ionViewDidLeave() {
@@ -143,6 +174,15 @@ export class TransactionComponent  implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.onDestroy();
+  }
+
+  disableSubmitBtn(): boolean {
+    if(this.transactionForm.get("creditAmount")?.value == null
+      && this.transactionForm.get("debitAmount")?.value == null) {
+        return true;
+      }
+
+    return !this.transactionForm.valid;
   }
 
 }

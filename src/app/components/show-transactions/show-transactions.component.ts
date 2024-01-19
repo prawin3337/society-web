@@ -96,8 +96,10 @@ export class ShowTransactionsComponent  implements OnInit {
         this.transactionDet.emit(this.getTransactionDet(this.transactions))
       });
 
-    // const { flatNo } = this.memberService.getUserInfo();
-    // this.transactionsService.getTransactions(flatNo);
+    const { type } = this.memberService.getUserInfo();
+    if (type == "admin") {
+      this.tableCol.push({ field: "debitAmount", width: 100 });
+    }
   }
 
   private getTransactionDet(data: any[]) {
