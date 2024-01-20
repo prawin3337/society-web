@@ -27,9 +27,11 @@ export class UserDashboardPage {
   };
 
   transactionDet = {
-    creditAmt: 0,
+    totalAmt: 0,
     approvedAmt: 0
   }
+
+  transactionType = "Credit";
 
   constructor(private memberService: MemberService) {}
 
@@ -62,7 +64,13 @@ export class UserDashboardPage {
   }
 
   onTransactionDet(event: any) {
-    this.transactionDet = event;
+    if(this.filter.flatNo === "0") {
+      this.transactionType = "Debit";
+      this.transactionDet = event.payload.debit;
+    } else {
+      this.transactionType = "Credit";
+      this.transactionDet = event.payload.credit;
+    }
   }
 
 }

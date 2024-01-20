@@ -93,7 +93,10 @@ export class ShowTransactionsComponent  implements OnInit {
     this.transactionsService.transactions
       .subscribe((event: any) => {
         this.transactions = event.payload;
-        this.transactionDet.emit(this.getTransactionDet(this.transactions))
+        this.transactionDet.emit({payload: {
+          credit: this.getCreditTransactionDet(this.transactions),
+          debit: this.getDebitTransactionDet(this.transactions)
+        }});
       });
 
     const { type } = this.memberService.getUserInfo();
@@ -102,7 +105,7 @@ export class ShowTransactionsComponent  implements OnInit {
     }
   }
 
-  private getTransactionDet(data: any[]) {
+  private getCreditTransactionDet(data: any[]) {
     let creditAmt = 0;
     let approvedAmt = 0;
 
@@ -111,7 +114,19 @@ export class ShowTransactionsComponent  implements OnInit {
       approvedAmt = (transaction.isApproved == "y") ? (approvedAmt + Number(transaction.creditAmount)) : approvedAmt;
     });
 
-    return ({ creditAmt, approvedAmt });
+    return ({ totalAmt: creditAmt, approvedAmt });
+  }
+
+  private getDebitTransactionDet(data: any[]) {
+    let debitAmt = 0;
+    let approvedAmt = 0;
+
+    data.forEach((transaction) => {
+      debitAmt += Number(transaction.debitAmount);
+      approvedAmt = (transaction.isApproved == "y") ? (approvedAmt + Number(transaction.debitAmount)) : approvedAmt;
+    });
+
+    return ({ totalAmt: debitAmt, approvedAmt });
   }
 
   async onSelectionChanged($event: any) {
