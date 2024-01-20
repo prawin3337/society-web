@@ -172,8 +172,8 @@ export class LoginPageComponent  implements OnInit, OnDestroy {
       }))
       .subscribe(async (res: any) => {
         if (res.success) {
-          this.flatNoList = res.data;
-          this.options = res.data.map((obj: any) => obj.flatNo);
+          this.flatNoList = res.data.filter((obj: any) => obj.flatNo !== "0");
+          this.options = this.flatNoList.map((obj: any) => obj.flatNo);
         }
         (await loadingCtr).dismiss();
       });
