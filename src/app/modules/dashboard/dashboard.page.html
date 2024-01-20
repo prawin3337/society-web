@@ -1,20 +1,20 @@
 <app-header [dashboarName]="'Society Dashboard'"></app-header>
 
 <ion-content [fullscreen]="true">
+
+  <mat-form-field>
+    <mat-label>Enter a date range</mat-label>
+    <mat-date-range-input [formGroup]="dateRange" [rangePicker]="picker" >
+      <input matStartDate formControlName="start" placeholder="Start date">
+      <input matEndDate formControlName="end" placeholder="End date">
+    </mat-date-range-input>
+    <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
   
-  <!-- <mat-grid-list cols="2" rowHeight="2:1">
-    <mat-grid-tile>1</mat-grid-tile>
-    <mat-grid-tile>2</mat-grid-tile>
-    <mat-grid-tile>3</mat-grid-tile>
-    <mat-grid-tile>4</mat-grid-tile>
-    <mat-grid-tile>5</mat-grid-tile>
-    <mat-grid-tile>6</mat-grid-tile>
-  </mat-grid-list> -->
-  <mat-card class="example-card">
-    <mat-card-header>
-      <mat-card-subtitle>Comming soon....</mat-card-subtitle>
-    </mat-card-header>
-    <img mat-card-image src="../../../assets/work-in-progress.png" alt="Work in progress">
-  </mat-card>
+  <canvas *ngIf="allTransactions.length" baseChart class="chart" [data]="barChartData" [options]="barChartOptions" [plugins]="barChartPlugins"
+    [type]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+  </canvas>
 
 </ion-content>

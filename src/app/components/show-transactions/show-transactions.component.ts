@@ -92,11 +92,15 @@ export class ShowTransactionsComponent  implements OnInit {
   ngOnInit() {
     this.transactionsService.transactions
       .subscribe((event: any) => {
-        this.transactions = event.payload;
-        this.transactionDet.emit({payload: {
-          credit: this.getCreditTransactionDet(this.transactions),
-          debit: this.getDebitTransactionDet(this.transactions)
-        }});
+        if(event.type == "fetch") {
+          this.transactions = event.payload;
+          this.transactionDet.emit({
+            payload: {
+              credit: this.getCreditTransactionDet(this.transactions),
+              debit: this.getDebitTransactionDet(this.transactions)
+            }
+          });
+        }
       });
 
     const { type } = this.memberService.getUserInfo();

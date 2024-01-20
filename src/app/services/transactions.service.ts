@@ -13,23 +13,32 @@ export class TransactionsService {
 
   constructor(private http: HttpClient, private toastController: ToastController) {}
 
-  getTransactions(flatNo: string, financYear: string) {
-    const finYear = financYear.split("-");
-    const fromDate = `${finYear[0]}-04-1 00:00:00`;
-    const toDate = `${finYear[1]}-03-28 23:59:00`;
-    const params = {
-      flatNo,
-      financYear: JSON.stringify({ fromDate, toDate })
+  getTransactions(flatNo: string|null = null, financYear: string|null = null) {
+    let params = {};
+    let eventType = "fetchAll";
+    
+    if (flatNo && financYear) {
+      const finYear = financYear.split("-");
+      const fromDate = `${finYear[0]}-04-1 00:00:00`;
+      const toDate = `${finYear[1]}-03-28 23:59:00`;
+      params = {
+        flatNo,
+        financYear: JSON.stringify({ fromDate, toDate })
+      }
+      eventType = "fetch";
     }
-    return this.http.get(environment.apis.transactionAll, { params })
+    
+    this.http.get(environment.apis.transactionAll, { params })
       .subscribe((res:any) => {
         if (res.success) {
           this.transactions.next({
-            type: "fetch",
+            type: eventType,
             payload: res.data
           });
         }
       });
+
+    return this.transactions;
   }
 
   updateTransaction(payload: FormData) {
