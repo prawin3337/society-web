@@ -12,12 +12,22 @@
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-date-range-picker #picker></mat-date-range-picker>
   </mat-form-field>
-  
-  <div class="bar-chart chart-countainer">
-    <canvas *ngIf="allTransactions.length" baseChart class="chart" [data]="barChartData" [options]="barChartOptions"
-      [plugins]="barChartPlugins" [type]="barChartType" (chartHover)="chartHovered($event)"
-      (chartClick)="chartClicked($event)">
-    </canvas>
+
+  <div>
+    <div class="bar-chart-container">
+      <canvas *ngIf="allTransactions.length" baseChart class="chart" [data]="barChartData" [options]="barChartOptions"
+        [plugins]="barChartPlugins" [type]="barChartType" (chartHover)="chartHovered($event)"
+        (chartClick)="chartClicked($event)">
+      </canvas>
+    </div>
+    
+    <div class="pie-chart-container">
+      <canvas baseChart class="chart" [data]="pieChartData" [type]="pieChartType" [options]="pieChartOptions"
+        [plugins]="pieChartPlugins">
+      </canvas>
+    </div>
   </div>
+  
+  
 
 </ion-content>

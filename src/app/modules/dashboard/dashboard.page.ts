@@ -6,6 +6,8 @@ import { months } from "../../util";
 
 import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
+import DatalabelsPlugin from 'chartjs-plugin-datalabels';
+
 import DataLabelsPlugin from 'chartjs-plugin-datalabels';
 import { FormControl, FormGroup } from '@angular/forms';
 
@@ -18,12 +20,15 @@ export class DashboardPage {
 
   allTransactions:any[] = [];
 
+  totalDebitAmt = 0;
+  totalCreditAmt = 0;
+
   dateRange = new FormGroup({
     start: new FormControl<Date | null>(new Date(new Date().setMonth(new Date().getMonth()-11))),
     end: new FormControl<Date | null>(new Date()),
   });
 
-  @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
+  // @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
 
   public barChartOptions: ChartConfiguration['options'] = {
     // We use these empty structures as placeholders for dynamic theming.
@@ -52,6 +57,38 @@ export class DashboardPage {
       { data: [], label: 'Debit Amount', backgroundColor: "#FF4040" },
     ],
   }
+
+
+  // Pie
+  public pieChartOptions: ChartConfiguration['options'] = {
+    plugins: {
+      legend: {
+        display: true,
+        position: 'top',
+      },
+      datalabels: {
+        formatter: (value: any, ctx: any) => {
+          if (ctx.chart.data.labels) {
+            return ctx.chart.data.labels[ctx.dataIndex];
+          }
+        },
+      },
+    },
+  };
+
+
+  public pieChartData: ChartData<'pie', number[], string | string[]> = {
+    labels: ['Credit Amount', 'Debit Amount'],
+    datasets: [
+      {
+        data: [0, 0],
+        backgroundColor: ["#59E659", "#FF4040"]
+      },
+    ]
+  };
+
+  public pieChartType: ChartType = 'pie';
+  public pieChartPlugins = [DatalabelsPlugin];
 
   constructor(private transactionsService: TransactionsService) {}
 
@@ -83,7 +120,7 @@ export class DashboardPage {
     return ({ startDate, endDate });
   }
 
-  updateChartData(transactions = this.allTransactions) {
+  updateChartData() {
     let newChartData = Object.assign({}, this.barChartData);
 
     const { startDate, endDate } = this.getFilterVal();
@@ -104,18 +141,30 @@ export class DashboardPage {
     newChartData.datasets[1].data = debitAmtArr;
 
     this.barChartData = newChartData;
+    
+    this.updatePieChart()
+  }
+
+  updatePieChart() {
+    let newPieChartData = Object.assign({}, this.pieChartData);
+    newPieChartData.datasets[0].data = [this.totalCreditAmt, this.totalDebitAmt];
+    this.pieChartData = newPieChartData;
   }
 
   private getCreditDebitRec(keys: string[], obj: any) {
     let creditAmtArr:any[] = [];
     let debitAmtArr:any[] = [];
+    this.totalCreditAmt = 0;
+    this.totalDebitAmt = 0;
 
     keys.forEach((key) => {
       let crSum = obj[key].reduce((acc: number, cur: any) => acc + Number(cur.creditAmount | 0), 0);
       creditAmtArr.push(crSum);
+      this.totalCreditAmt += crSum;
 
       let dbSum = obj[key].reduce((acc: number, cur: any) => acc + Number(cur.debitAmount | 0), 0);
       debitAmtArr.push(dbSum);
+      this.totalDebitAmt += dbSum;
     });
     return { creditAmtArr, debitAmtArr };
   }
