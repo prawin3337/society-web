@@ -19,8 +19,8 @@ export class DashboardPage {
   allTransactions:any[] = [];
 
   dateRange = new FormGroup({
-    start: new FormControl<Date | null>(new Date("1-apr-2023")),
-    end: new FormControl<Date | null>(new Date("31-mar-2024")),
+    start: new FormControl<Date | null>(new Date(new Date().setMonth(new Date().getMonth()-11))),
+    end: new FormControl<Date | null>(new Date()),
   });
 
   @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
@@ -59,7 +59,7 @@ export class DashboardPage {
     this.transactionsService.getTransactions()
       .subscribe((event: any) => {
         if (event.type == "fetchAll") {
-          this.allTransactions = event.payload;
+          this.allTransactions = event.payload.filter((obj:any) => obj.isApproved === "y");
           this.updateChartData();
         }
       });

@@ -8,13 +8,16 @@
       <input matStartDate formControlName="start" placeholder="Start date">
       <input matEndDate formControlName="end" placeholder="End date">
     </mat-date-range-input>
-    <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+    <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-date-range-picker #picker></mat-date-range-picker>
   </mat-form-field>
   
-  <canvas *ngIf="allTransactions.length" baseChart class="chart" [data]="barChartData" [options]="barChartOptions" [plugins]="barChartPlugins"
-    [type]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
-  </canvas>
+  <div class="bar-chart chart-countainer">
+    <canvas *ngIf="allTransactions.length" baseChart class="chart" [data]="barChartData" [options]="barChartOptions"
+      [plugins]="barChartPlugins" [type]="barChartType" (chartHover)="chartHovered($event)"
+      (chartClick)="chartClicked($event)">
+    </canvas>
+  </div>
 
 </ion-content>
