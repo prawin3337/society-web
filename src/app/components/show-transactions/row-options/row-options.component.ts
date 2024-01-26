@@ -8,15 +8,9 @@ import { MatButton, MatButtonModule } from '@angular/material/button';
   standalone: true,
   imports: [MatButtonModule]
 })
-export class RowOptionsComponent  implements OnInit {
+export class RowOptionsComponent {
 
   @Input() parentRef: any;
   @Input() data: any;
-
-  constructor() { }
-
-  ngOnInit() {
-    console.log("data=", this.data);
-  }
 
 }

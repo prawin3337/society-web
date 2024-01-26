@@ -30,6 +30,11 @@ export class TransactionsService {
     
     this.http.get(environment.apis.transactionAll, { params })
       .subscribe((res:any) => {
+        const data = res.data.map((obj:any) => {
+          obj.transactionType = obj.type;
+          obj.transactionDate = new Date(obj.transactionDate);
+          return obj;
+        });
         if (res.success) {
           this.transactions.next({
             type: eventType,
@@ -57,6 +62,10 @@ export class TransactionsService {
         });
         await toast.present();
       }));
+  }
+
+  deleteTransaction(transactionId: number) {
+    return this.http.delete(environment.apis.transaction, {body:{ id: transactionId }});
   }
 
   approveTransaction(id: number, isApproved: string, flatNo: string) {

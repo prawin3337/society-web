@@ -1,3 +1,7 @@
-<button (click)="parentRef.onApproveTransaction(data[0])" mat-button color="primary">Approve Transaction</button> &nbsp;
+<button (click)="parentRef.onApproveTransaction(data[0])" mat-button color="primary">Approve</button> <br>
 
-<button (click)="parentRef.onRejectTransaction(data[0])" mat-button color="warn">Reject Transaction</button>
+<button (click)="parentRef.onRejectTransaction(data[0])" mat-button color="warn">Reject</button><br>
+
+<button (click)="parentRef.onUpdateTransaction(data[0])" mat-button color="primary">Update</button><br>
+
+<button (click)="parentRef.onDeleteTransaction(data[0])" mat-button color="warn">Delete</button>

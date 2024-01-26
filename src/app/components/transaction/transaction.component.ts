@@ -21,6 +21,17 @@ export class TransactionComponent  implements OnInit, OnDestroy {
     this._filter = value;
   }
 
+  _selectedTransaction: any = null;
+  @Input() set selectedTransaction(value: any) {
+    console.log(this._selectedTransaction);
+    this._selectedTransaction = value;
+    if (this._selectedTransaction !== null) {
+      delete this._selectedTransaction.payload.date;
+      delete this._selectedTransaction.payload.userId;
+      this.transactionForm.patchValue(this._selectedTransaction.payload);
+    }
+  }
+
   transactionForm: FormGroup = {} as FormGroup;
   billImage: any = {};
   userInfo: any = {};
@@ -59,7 +70,16 @@ export class TransactionComponent  implements OnInit, OnDestroy {
 
     if (this.userInfo.type === "admin") {
       this.showOptionalFields = true;
-      this.transactionTypes.push({ value: 'expense', viewValue: 'Expense' });
+      this.transactionTypes.push(
+        { value: 'lightBill', viewValue: 'Light Bill' },
+        { value: 'serviceCharges', viewValue: 'Service charges' },
+        { value: 'glossary', viewValue: 'Glossary' },
+        { value: 'electricAndMotorService', viewValue: 'Electric and motor service' },
+        { value: 'repairing', viewValue: 'Repairing' },
+        { value: 'amc', viewValue: 'AMC contract' },
+        { value: 'stationery', viewValue: 'Stationery' },
+        { value: 'other', viewValue: 'Other' }
+      );
     } else {
       const creditAmountCtrl = this.transactionForm.get("creditAmount");
       creditAmountCtrl?.addValidators(Validators.required);
@@ -71,6 +91,7 @@ export class TransactionComponent  implements OnInit, OnDestroy {
 
   buildTransactionForm() {
     this.transactionForm = new FormGroup({
+      id: new FormControl(null),
       flatNo: new FormControl('', { validators: [Validators.required] }),
       creditAmount: new FormControl(null),
       debitAmount: new FormControl(null),
@@ -89,8 +110,7 @@ export class TransactionComponent  implements OnInit, OnDestroy {
         ]}),
       transactionType: new FormControl('', {validators: [Validators.required]}),
       receiptNumber: new FormControl(''),
-      photo: new FormControl(''),
-      isCredit: new FormControl()
+      photo: new FormControl('')
     })
 
     this.setDefaultValues();
@@ -115,7 +135,6 @@ export class TransactionComponent  implements OnInit, OnDestroy {
 
   setDefaultValues() {
     this.transactionForm.get('flatNo')?.setValue(this._filter.flatNo);
-    this.transactionForm.get('isCredit')?.setValue(1);
 
     const transactionType = this.userInfo.type === "admin" ? "" : "maintainance"
     this.transactionForm.get('transactionType')?.setValue(transactionType);
@@ -142,24 +161,37 @@ export class TransactionComponent  implements OnInit, OnDestroy {
 
   async onSubmit() {
     const data = this.transactionForm.value;
-    const payload = new FormData();
-    for (let key in data) {
-      if (key == 'photo' && data[key]) {
-        await payload.append(key, data[key], `.${this.billImage.format}`);
-      } else if (key == 'transactionDate') {
-        const tDate = new Date(data[key]);
-        const newDate = `${tDate.getFullYear()}-${tDate.getMonth() + 1}-${tDate.getDate()}`;
-        payload.append(key, newDate);
-      } else {
-        await payload.append(key, data[key]);
-      }
-    }
 
-    this.transactionsService.updateTransaction(payload)
-      .subscribe(async (data: any) => {
-        const { flatNo, financYear } = this._filter;
-        this.transactionsService.getTransactions(flatNo, financYear);
-      });
+    const promise = new Promise((res, rej) => {
+      if (data.id !== null || data.id !== undefined) {
+        this.transactionsService.deleteTransaction(data.id).subscribe((data) => {
+          res(data);
+        });
+      } else {
+        res({});
+      }
+    });
+    
+    promise.then(async () => {
+      const payload = new FormData();
+      for (let key in data) {
+        if (key == 'photo' && data[key]) {
+          await payload.append(key, data[key], `.${this.billImage.format}`);
+        } else if (key == 'transactionDate') {
+          const tDate = new Date(data[key]);
+          const newDate = `${tDate.getFullYear()}-${tDate.getMonth() + 1}-${tDate.getDate()}`;
+          payload.append(key, newDate);
+        } else {
+          await payload.append(key, data[key]);
+        }
+      }
+
+      this.transactionsService.updateTransaction(payload)
+        .subscribe(async (data: any) => {
+          const { flatNo, financYear } = this._filter;
+          this.transactionsService.getTransactions(flatNo, financYear);
+        });
+    })
   }
 
   onDestroy() {

@@ -72,5 +72,7 @@
     </div>
   </div>
 
-  <button [disabled]="disableSubmitBtn()" type="submit" mat-raised-button color="primary">Submit</button>
+  <button [disabled]="disableSubmitBtn()" type="submit" mat-raised-button color="primary">
+    {{_selectedTransaction ? _selectedTransaction.action.toUpperCase() : 'submit' | uppercase}}
+  </button>
 </form>

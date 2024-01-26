@@ -33,6 +33,8 @@ export class UserDashboardPage {
 
   transactionType = "Credit";
 
+  selectedTransaction:any = null;
+
   constructor(private memberService: MemberService) {}
 
   ngOnInit() {
@@ -70,6 +72,13 @@ export class UserDashboardPage {
     } else {
       this.transactionType = "Credit";
       this.transactionDet = event.payload.credit;
+    }
+  }
+
+  onTransactionSelect(event: any) {
+    this.selectedTransaction = event;
+    if(this.selectedTransaction) {
+      this.panelOpenState = true;
     }
   }
 

@@ -30,6 +30,7 @@ export class ShowTransactionsComponent  implements OnInit {
   }
 
   @Output() transactionDet = new EventEmitter();
+  @Output() onTransactionSelect = new EventEmitter();
 
   transactions = [];
   tableCol: ColDef[] = [];
@@ -176,6 +177,44 @@ export class ShowTransactionsComponent  implements OnInit {
           role: 'confirm',
           handler: () => {
             this.approveTransaction($event.id, 'y', this._filter.flatNo);
+          },
+        }
+      ],
+    });
+    await alert.present();
+  }
+
+  onUpdateTransaction($event: any) {
+    if($event.isApproved === "y") return;
+
+    this.onTransactionSelect.emit({
+      action: "update",
+      payload: $event
+    })
+  }
+
+  async onDeleteTransaction($event: any) {
+    if ($event.isApproved === "y") return;
+
+    const alert = await this.alertController.create({
+      header: 'Alert!',
+      subHeader: '',
+      message: 'Delete transaction?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => { },
+        },
+        {
+          text: 'OK',
+          role: 'confirm',
+          handler: () => {
+            this.transactionsService.deleteTransaction($event.id)
+              .subscribe((res) => {
+                const { flatNo, financYear } = this._filter;
+                this.transactionsService.getTransactions(flatNo, financYear);
+              })
           },
         }
       ],

@@ -61,7 +61,8 @@
   
       <app-show-transactions *ngIf="userInfo.flatNo"
         [filter]="filter"
-        (transactionDet)="onTransactionDet($event)"></app-show-transactions>
+        (transactionDet)="onTransactionDet($event)"
+        (onTransactionSelect)="onTransactionSelect($event)"></app-show-transactions>
   
     </mat-expansion-panel>
   </mat-accordion>
@@ -74,12 +75,13 @@
           <i class="bi bi-cash-coin me-1"></i>&nbsp;
           Update transaction
         </mat-panel-title>
-        <!-- <mat-panel-description>
-              Currently I am {{panelOpenState ? 'open' : 'closed'}}
-            </mat-panel-description> -->
+
       </mat-expansion-panel-header>
   
-      <app-transaction *ngIf="userInfo.flatNo" [filter]="filter"></app-transaction>
+      <app-transaction *ngIf="userInfo.flatNo"
+        [filter]="filter"
+        [selectedTransaction]="selectedTransaction">
+      </app-transaction>
   
     </mat-expansion-panel>
   </mat-accordion>
