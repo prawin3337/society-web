@@ -18,13 +18,14 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-12 col-lg-1"></div>
       <div class="col-sm-12 col-lg-4">
         <canvas baseChart class="chart" [data]="pieChartData" [type]="pieChartType" [options]="pieChartOptions"
           [plugins]="pieChartPlugins">
         </canvas>
       </div>
-      <div class="col-sm-12 col-lg-2"></div>
+      <div class="col-sm-12 col-lg-4">
+        <transaction-type-pie-chart [filter]="filter"></transaction-type-pie-chart>
+      </div>
       <div class="col-sm-12 col-lg-4">
         <maintainance-pie-chart [filter]="filter"></maintainance-pie-chart>
       </div>

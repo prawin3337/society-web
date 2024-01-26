@@ -17,6 +17,7 @@ import { NgChartsModule } from 'ng2-charts';
 
 import { HeaderComponent } from "../../components/header/header.component";
 import { MaintainancePieChart } from "./charts/maintainance.pie.chart";
+import { TransactionDebitPieChart } from "./charts/transaction.debit.pie.chart";
 
 @NgModule({
   imports: [
@@ -34,7 +35,8 @@ import { MaintainancePieChart } from "./charts/maintainance.pie.chart";
   ],
   declarations: [
     DashboardPage,
-    MaintainancePieChart
+    MaintainancePieChart,
+    TransactionDebitPieChart
   ]
 })
 export class DashboardPageModule {}

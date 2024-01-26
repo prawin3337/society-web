@@ -17,7 +17,6 @@ export class MaintainancePieChart implements OnInit {
     _filter: any = {};
     @Input() set filter(value: any) {
         this._filter = value;
-        console.log(this._filter);
         this.updateChartData();
     }
 
@@ -61,7 +60,6 @@ export class MaintainancePieChart implements OnInit {
             .subscribe((event) => {
                 if (event.type == "fetchAll") {
                     this.allMaintainance = event.payload;
-                    console.log(this.allMaintainance);
                     this.updateChartData();
                 }
             });
@@ -69,7 +67,6 @@ export class MaintainancePieChart implements OnInit {
 
     updateChartData() {
         let { start, end } = this._filter;
-        console.log(start, end);
         
         if (!start || !end) return;
 
@@ -81,8 +78,6 @@ export class MaintainancePieChart implements OnInit {
                 const maintainanceDate = new Date(obj.date).getTime();
                 return maintainanceDate >= start && maintainanceDate <= end;
             });
-
-        console.log(tempData);
 
         let totalMaintainance = 0;
         let totalPenalty = 0;
