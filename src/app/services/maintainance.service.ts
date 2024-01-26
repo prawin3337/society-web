@@ -30,4 +30,17 @@ export class MaintainanceService {
         }
       });
   }
+
+  fetchAllMaintenance() {
+    this.http.get(environment.apis.maintenanceAll)
+      .subscribe((res: any) => {
+        if (res.success) {
+          this.maintenance.next({
+            type: "fetchAll",
+            payload: res.data
+          });
+        }
+      });
+    return this.maintenance;
+  }
 }

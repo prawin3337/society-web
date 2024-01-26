@@ -2,30 +2,58 @@
 
 <ion-content [fullscreen]="true">
 
-  <mat-form-field>
-    <mat-label>Enter a date range</mat-label>
-    <mat-date-range-input [formGroup]="dateRange" [rangePicker]="picker" >
-      <input matStartDate formControlName="start" placeholder="Start date">
-      <input matEndDate formControlName="end" placeholder="End date">
-    </mat-date-range-input>
-    <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
-    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-date-range-picker #picker></mat-date-range-picker>
-  </mat-form-field>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+        <mat-form-field>
+          <mat-label>Enter a date range</mat-label>
+          <mat-date-range-input [formGroup]="dateRange" [rangePicker]="picker">
+            <input matStartDate formControlName="start" placeholder="Start date">
+            <input matEndDate formControlName="end" placeholder="End date">
+          </mat-date-range-input>
+          <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-lg-1"></div>
+      <div class="col-sm-12 col-lg-4">
+        <canvas baseChart class="chart" [data]="pieChartData" [type]="pieChartType" [options]="pieChartOptions"
+          [plugins]="pieChartPlugins">
+        </canvas>
+      </div>
+      <div class="col-sm-12 col-lg-2"></div>
+      <div class="col-sm-12 col-lg-4">
+        <maintainance-pie-chart [filter]="filter"></maintainance-pie-chart>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm">
+        <div class="bar-chart-container">
+          <canvas *ngIf="allTransactions.length" baseChart class="chart" [data]="barChartData" [options]="barChartOptions"
+            [plugins]="barChartPlugins" [type]="barChartType" (chartHover)="chartHovered($event)"
+            (chartClick)="chartClicked($event)">
+          </canvas>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div>
-    <div class="bar-chart-container">
-      <canvas *ngIf="allTransactions.length" baseChart class="chart" [data]="barChartData" [options]="barChartOptions"
-        [plugins]="barChartPlugins" [type]="barChartType" (chartHover)="chartHovered($event)"
-        (chartClick)="chartClicked($event)">
-      </canvas>
-    </div>
     
-    <div class="pie-chart-container">
-      <canvas baseChart class="chart" [data]="pieChartData" [type]="pieChartType" [options]="pieChartOptions"
-        [plugins]="pieChartPlugins">
-      </canvas>
-    </div>
+  </div>
+
+  <div class="pie-chart-container">
+    
+  </div>
+  <div class="pie-chart-container">
+    
+  </div>
+
+  <div>
+    
   </div>
   
   

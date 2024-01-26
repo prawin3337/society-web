@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { TransactionsService } from "../../services/transactions.service";
 import { groupBy, orderBy } from "lodash"
 
@@ -6,8 +6,6 @@ import { months } from "../../util";
 
 import { ChartConfiguration, ChartData, ChartEvent, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
-import DatalabelsPlugin from 'chartjs-plugin-datalabels';
-
 import DataLabelsPlugin from 'chartjs-plugin-datalabels';
 import { FormControl, FormGroup } from '@angular/forms';
 
@@ -23,9 +21,14 @@ export class DashboardPage {
   totalDebitAmt = 0;
   totalCreditAmt = 0;
 
+  filter = {
+    start: new Date(new Date().setMonth(new Date().getMonth() - 11)),
+    end: new Date()
+  }
+
   dateRange = new FormGroup({
-    start: new FormControl<Date | null>(new Date(new Date().setMonth(new Date().getMonth()-11))),
-    end: new FormControl<Date | null>(new Date()),
+    start: new FormControl<Date | null>(this.filter.start),
+    end: new FormControl<Date | null>(this.filter.end),
   });
 
   // @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
@@ -61,6 +64,7 @@ export class DashboardPage {
 
   // Pie
   public pieChartOptions: ChartConfiguration['options'] = {
+    responsive: true,
     plugins: {
       legend: {
         display: true,
@@ -68,9 +72,10 @@ export class DashboardPage {
       },
       datalabels: {
         formatter: (value: any, ctx: any) => {
-          if (ctx.chart.data.labels) {
-            return ctx.chart.data.labels[ctx.dataIndex];
-          }
+          return "Rs" + value + "/-";
+          // if (ctx.chart.data.labels) {
+          //   return ctx.chart.data.labels[ctx.dataIndex];
+          // }
         },
       },
     },
@@ -88,7 +93,7 @@ export class DashboardPage {
   };
 
   public pieChartType: ChartType = 'pie';
-  public pieChartPlugins = [DatalabelsPlugin];
+  public pieChartPlugins = [DataLabelsPlugin];
 
   constructor(private transactionsService: TransactionsService) {}
 
@@ -102,7 +107,8 @@ export class DashboardPage {
       });
 
     this.dateRange.valueChanges
-      .subscribe(() => {
+      .subscribe((value: any) => {
+        this.filter = value;
         this.updateChartData();
       });
   }
@@ -121,8 +127,6 @@ export class DashboardPage {
   }
 
   updateChartData() {
-    let newChartData = Object.assign({}, this.barChartData);
-
     const { startDate, endDate } = this.getFilterVal();
 
     const tempTrans = this.allTransactions
@@ -133,6 +137,7 @@ export class DashboardPage {
 
     const tranGroupByMon = this.tranGroupByMon(tempTrans);
 
+    let newChartData = Object.assign({}, this.barChartData);
     const labels = this.getLabels(tranGroupByMon);
     newChartData.labels = labels;
 

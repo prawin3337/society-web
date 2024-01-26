@@ -16,6 +16,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { NgChartsModule } from 'ng2-charts';
 
 import { HeaderComponent } from "../../components/header/header.component";
+import { MaintainancePieChart } from "./charts/maintainance.pie.chart";
 
 @NgModule({
   imports: [
@@ -31,6 +32,9 @@ import { HeaderComponent } from "../../components/header/header.component";
     MatDatepickerModule,
     MatFormFieldModule
   ],
-  declarations: [DashboardPage]
+  declarations: [
+    DashboardPage,
+    MaintainancePieChart
+  ]
 })
 export class DashboardPageModule {}
