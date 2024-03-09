@@ -21,7 +21,8 @@ export class LandingPage {
     tap: "reports",
     label: "Reports",
     url: "/society/reports",
-    icon: "document"
+    icon: "document",
+    directive: "authDirective"
   }, {
     tap: "settings",
     label: "Settings",

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import { TokenService, TokenEnum } from './token.service';
 import { AlertController } from '@ionic/angular';
+import { MemberService } from './member.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,8 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<u
     private authService: AuthService,
     private router: Router,
     private tokenService:TokenService,
-    private alertController: AlertController) {}
+    private alertController: AlertController,
+    private memberService: MemberService) {}
   
   async presentAlert() {
     const alert = await this.alertController.create({
@@ -45,11 +47,16 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<u
     childRoute: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return new Promise(async (res) => {
-      const isValid = this.tokenService.tokenAvailable(TokenEnum.AuthToke);
+      let isValid = this.tokenService.tokenAvailable(TokenEnum.AuthToke);
       if (!isValid) {
         this.tokenService.deleteToken([TokenEnum.AuthToke, TokenEnum.userInfo]);
         await this.presentAlert();
         this.router.navigateByUrl('login');
+      }
+
+      if (childRoute.url.length > 0 && childRoute.url[0].path === "reports") {
+        const user = this.memberService.getUserInfo();
+        isValid = user.type === "admin"
       }
       res(isValid);
     });

@@ -8,6 +8,7 @@ import { TabsPageRoutingModule } from './landing-routing.module';
 import { CommonComponentModule } from "../../components/common-component.module";
 
 import { LandingPage } from './landing.page';
+import { AuthDirective } from 'src/app/directives/auth.directive';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { LandingPage } from './landing.page';
     CommonModule,
     FormsModule,
     TabsPageRoutingModule,
-    CommonComponentModule
+    CommonComponentModule,
+    AuthDirective
   ],
   declarations: [LandingPage]
 })

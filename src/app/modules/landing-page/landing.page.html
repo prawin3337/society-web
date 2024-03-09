@@ -2,10 +2,17 @@
   <ion-tabs>
     <ion-tab-bar slot="bottom">
       @for (tap of taps; track tap) {
-        <ion-tab-button tab="{{tap.tap}}" href="{{tap.url}}">
-          <ion-icon name="{{tap.icon}}"></ion-icon>
-          <ion-label>{{tap.label}}</ion-label>
-        </ion-tab-button>
+        @if(tap.tap === "reports") {
+          <ion-tab-button authDirective tab="{{tap.tap}}" href="{{tap.url}}">
+            <ion-icon name="{{tap.icon}}"></ion-icon>
+            <ion-label>{{tap.label}}</ion-label>
+          </ion-tab-button>
+        } @else {
+          <ion-tab-button tab="{{tap.tap}}" href="{{tap.url}}">
+            <ion-icon name="{{tap.icon}}"></ion-icon>
+            <ion-label>{{tap.label}}</ion-label>
+          </ion-tab-button>
+        }
       }
     </ion-tab-bar>
   </ion-tabs>
