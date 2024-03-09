@@ -1,4 +1,6 @@
-const apiDomain = "https://ancient-newt-34.telebit.io";
+// const apiDomain = "https://ancient-newt-34.telebit.io";
+// const apiDomain = "https://62ba-2405-201-1018-40ea-e65f-1ff-fe49-ae5c.ngrok-free.app";
+const apiDomain = "http://192.168.0.7:3000";
 
 export const environment = {
   production: true,
