@@ -1,25 +1,12 @@
 <ion-content>
   <ion-tabs>
     <ion-tab-bar slot="bottom">
-      <ion-tab-button tab="user-dashboard" href="/society/user-dashboard">
-        <ion-icon name="podium"></ion-icon>
-        <ion-label>User Dashboard</ion-label>
-      </ion-tab-button>
-
-      <ion-tab-button tab="dashboard" href="/society/dashboard">
-        <ion-icon name="analytics"></ion-icon>
-        <ion-label>Society Dashboard</ion-label>
-      </ion-tab-button>
-
-      <ion-tab-button tab="reports" href="/society/reports">
-        <ion-icon name="document"></ion-icon>
-        <ion-label>Reports</ion-label>
-      </ion-tab-button>
-
-      <ion-tab-button tab="settings" href="/society/settings">
-        <ion-icon name="settings"></ion-icon>
-        <ion-label>Settings</ion-label>
-      </ion-tab-button>
+      @for (tap of taps; track tap) {
+        <ion-tab-button tab="{{tap.tap}}" href="{{tap.url}}">
+          <ion-icon name="{{tap.icon}}"></ion-icon>
+          <ion-label>{{tap.label}}</ion-label>
+        </ion-tab-button>
+      }
     </ion-tab-bar>
   </ion-tabs>
 </ion-content>
