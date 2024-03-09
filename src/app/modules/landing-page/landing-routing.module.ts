@@ -23,6 +23,10 @@ const routes: Routes = [
         loadChildren: () => import('../settings/settings.module').then(m => m.SettingsModule)
       },
       {
+        path: 'reports',
+        loadChildren: () => import('../reports/reports.module').then(m => m.ReportsModule)
+      },
+      {
         path: '',
         redirectTo: '/society/user-dashboard',
         pathMatch: 'full'
