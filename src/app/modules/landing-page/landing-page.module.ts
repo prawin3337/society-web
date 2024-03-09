@@ -9,6 +9,7 @@ import { CommonComponentModule } from "../../components/common-component.module"
 
 import { LandingPage } from './landing.page';
 import { AuthDirective } from 'src/app/directives/auth.directive';
+import { HeaderComponent } from 'src/app/components/header/header.component';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { AuthDirective } from 'src/app/directives/auth.directive';
     FormsModule,
     TabsPageRoutingModule,
     CommonComponentModule,
-    AuthDirective
+    AuthDirective,
+    HeaderComponent
   ],
   declarations: [LandingPage]
 })

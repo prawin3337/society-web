@@ -1,35 +1,49 @@
 import { Component } from '@angular/core';
 
+interface Itab {
+  tapId: string,
+  label: string,
+  url: string,
+  icon: string,
+  selected?: boolean
+}
+
 @Component({
   selector: 'app-tabs',
   templateUrl: 'landing.page.html',
   styleUrls: ['landing.page.scss']
 })
 export class LandingPage {
-
-  taps = [{
-    tap: "user-dashboard",
+  dashboarName: string;
+  taps: Itab[] = [{
+    tapId: "user-dashboard",
     label: "User Dashboard",
     url: "/society/user-dashboard",
     icon: "podium"
   }, {
-    tap: "dashboard",
+    tapId: "dashboard",
     label: "Society Dashboard",
     url: "/society/dashboard",
     icon: "analytics"
   }, {
-    tap: "reports",
+    tapId: "reports",
     label: "Reports",
     url: "/society/reports",
-    icon: "document",
-    directive: "authDirective"
+    icon: "document"
   }, {
-    tap: "settings",
+    tapId: "settings",
     label: "Settings",
     url: "/society/settings",
     icon: "settings"
   }]
 
-  constructor() { }
+  constructor() {
+    this.dashboarName = this.taps[0].label;
+  }
+
+  onTabSelect(tapObj: any) {
+    const selected = this.taps.find(({ tapId }) => tapId == tapObj.tab) || this.taps[0];
+    this.dashboarName = selected.label;
+  }
 
 }

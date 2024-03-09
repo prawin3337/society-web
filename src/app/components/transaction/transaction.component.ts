@@ -23,7 +23,6 @@ export class TransactionComponent  implements OnInit, OnDestroy {
 
   _selectedTransaction: any = null;
   @Input() set selectedTransaction(value: any) {
-    console.log(this._selectedTransaction);
     this._selectedTransaction = value;
     if (this._selectedTransaction !== null) {
       delete this._selectedTransaction.payload.date;

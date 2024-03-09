@@ -15,7 +15,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { NgChartsModule } from 'ng2-charts';
 
-import { HeaderComponent } from "../../components/header/header.component";
 import { MaintainancePieChart } from "./charts/maintainance.pie.chart";
 import { TransactionDebitPieChart } from "./charts/transaction.debit.pie.chart";
 
@@ -28,7 +27,6 @@ import { TransactionDebitPieChart } from "./charts/transaction.debit.pie.chart";
     MatGridListModule,
     MatCardModule,
     DashboardPageRoutingModule,
-    HeaderComponent,
     NgChartsModule,
     MatDatepickerModule,
     MatFormFieldModule

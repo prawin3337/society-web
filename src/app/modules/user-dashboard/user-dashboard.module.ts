@@ -11,7 +11,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonComponentModule } from 'src/app/components/common-component.module';
-import { HeaderComponent } from "../../components/header/header.component";
 
 import { ShowTransactionsComponent } from "../../components/show-transactions/show-transactions.component";
 import { MatCardModule } from '@angular/material/card';
@@ -35,7 +34,6 @@ import { MaintainanceModule } from "../../components/maintainance/maintainance.m
     MatCardModule,
     MatSelectModule,
     CommonComponentModule,
-    HeaderComponent,
     ShowTransactionsComponent,
     AuthDirective,
     MaintainanceModule

@@ -11,7 +11,10 @@ import { MemberService } from 'src/app/services/member.service';
 })
 export class HeaderComponent  implements OnInit {
 
-  @Input() dashboarName: string = "";
+  _dashboarName: string = "";
+  @Input() set dashboarName(event: string) {
+    this._dashboarName = event;
+  }
 
   userInfo: any = {};
 

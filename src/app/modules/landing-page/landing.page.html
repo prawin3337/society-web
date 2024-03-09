@@ -1,14 +1,15 @@
+<app-header [dashboarName]="dashboarName"></app-header>
 <ion-content>
-  <ion-tabs>
+  <ion-tabs (ionTabsDidChange)="onTabSelect($event)">
     <ion-tab-bar slot="bottom">
       @for (tap of taps; track tap) {
-        @if(tap.tap === "reports") {
-          <ion-tab-button authDirective tab="{{tap.tap}}" href="{{tap.url}}">
+        @if(tap.tapId === "reports") {
+          <ion-tab-button authDirective tab="{{tap.tapId}}" href="{{tap.url}}">
             <ion-icon name="{{tap.icon}}"></ion-icon>
             <ion-label>{{tap.label}}</ion-label>
           </ion-tab-button>
         } @else {
-          <ion-tab-button tab="{{tap.tap}}" href="{{tap.url}}">
+          <ion-tab-button tab="{{tap.tapId}}" href="{{tap.url}}">
             <ion-icon name="{{tap.icon}}"></ion-icon>
             <ion-label>{{tap.label}}</ion-label>
           </ion-tab-button>
