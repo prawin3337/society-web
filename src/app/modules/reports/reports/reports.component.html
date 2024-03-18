@@ -1,3 +1,22 @@
-<p>
-  reports works!
-</p>
+<mat-drawer-container class="reports-container">
+  <mat-drawer mode="side" opened>
+    <div>
+      <mat-list role="list">
+        <mat-list-item role="listitem">
+          <a routerLink="maintaince-report" routerLinkActive="active-link" class="inactive-link">
+            Maintainance Report <i class="bi bi-caret-right-fill"></i>
+          </a>
+        </mat-list-item>
+        <mat-list-item role="listitem">
+          <a routerLink="transaction-report" routerLinkActive="active-link" class="inactive-link">
+            Transaction Report <i class="bi bi-caret-right-fill"></i>
+          </a>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </mat-drawer>
+  <mat-drawer-content>
+    Main content
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>
