@@ -1,9 +1,11 @@
-// .bar-chart-container {
-//     width: 75%;
-//     display: inline-block
-// }
+.bar-chart-container {
+    // width: 75%;
+    // display: inline-block
+    max-height: 500px;
+    margin-top: 50px;
+}
 
 .pie-chart-container {
     width: 25%;
-    display: inline-block
+    display: inline-block;
 }

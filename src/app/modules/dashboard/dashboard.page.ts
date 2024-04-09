@@ -21,8 +21,15 @@ export class DashboardPage {
   totalDebitAmt = 0;
   totalCreditAmt = 0;
 
+  private startDate = () => {
+    let date = new Date();
+    date = new Date(date.setDate(1));
+    date = new Date(date.setMonth(new Date().getMonth() - 6))
+    return date;
+  }
+
   filter = {
-    start: new Date(new Date().setMonth(new Date().getMonth() - 11)),
+    start: this.startDate(),
     end: new Date()
   }
 

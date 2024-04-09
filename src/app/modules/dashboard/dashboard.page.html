@@ -30,7 +30,7 @@
     </div>
     <div class="row">
       <div class="col-sm">
-        <div class="bar-chart-container">
+        <div class="bar-chart-container d-flex align-items-center justify-content-center">
           <canvas *ngIf="allTransactions.length" baseChart class="chart" [data]="barChartData" [options]="barChartOptions"
             [plugins]="barChartPlugins" [type]="barChartType" (chartHover)="chartHovered($event)"
             (chartClick)="chartClicked($event)">
