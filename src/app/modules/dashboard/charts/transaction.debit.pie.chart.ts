@@ -104,7 +104,7 @@ export class TransactionDebitPieChart implements OnInit {
 
             const groupTotal = sumBy(dataGroup[key], "debitAmount");
             const perVal = Math.round(groupTotal / totalDebitCnt * 100);
-            dataArr.push(perVal);
+            perVal && dataArr.push(perVal);
         });
 
         let newPieChartData = Object.assign({}, this.pieChartData);
