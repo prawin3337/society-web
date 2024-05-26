@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, effect, input } from "@angular/core";
 import { ChartConfiguration, ChartData, ChartType } from "chart.js";
 import DatalabelsPlugin from 'chartjs-plugin-datalabels';
 
@@ -14,11 +14,14 @@ import { MaintainanceService } from "../../../services/maintainance.service";
 })
 export class MaintainancePieChart implements OnInit {
 
-    _filter: any = {};
-    @Input() set filter(value: any) {
-        this._filter = value;
-        this.updateChartData();
-    }
+    // Depricated: Used signal to update
+    // _filter: any = {};
+    // @Input() set filter(value: any) {
+    //     this._filter = value;
+    //     this.updateChartData();
+    // }
+
+    filter = input.required<any>();
 
     public pieChartOptions: ChartConfiguration['options'] = {
         responsive: true,
@@ -53,7 +56,11 @@ export class MaintainancePieChart implements OnInit {
 
     allMaintainance = [];
 
-    constructor(private maintainanceService: MaintainanceService) {}
+    constructor(private maintainanceService: MaintainanceService) {
+        effect(() => {
+            this.updateChartData();
+        });
+    }
 
     ngOnInit() {
         this.maintainanceService.fetchAllMaintenance()
@@ -66,7 +73,7 @@ export class MaintainancePieChart implements OnInit {
     }
 
     updateChartData() {
-        let { start, end } = this._filter;
+        let { start, end } = this.filter();
         
         if (!start || !end) return;
 

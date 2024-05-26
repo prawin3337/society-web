@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit, effect, input } from "@angular/core";
 import { ChartConfiguration, ChartData, ChartType } from "chart.js";
 import DatalabelsPlugin from 'chartjs-plugin-datalabels';
 import { groupBy, sumBy, upperCase } from "lodash";
@@ -15,11 +15,12 @@ import { TransactionsService } from "src/app/services/transactions.service";
 })
 export class TransactionDebitPieChart implements OnInit {
 
-    _filter: any = {};
-    @Input() set filter(value: any) {
-        this._filter = value;
-        this.processChartData();
-    }
+    // _filter: any = {};
+    // @Input() set filter(value: any) {
+    //     this._filter = value;
+    //     this.processChartData();
+    // }
+    filter = input.required<any>();
 
     public pieChartOptions: ChartConfiguration['options'] = {
         responsive: true,
@@ -54,7 +55,11 @@ export class TransactionDebitPieChart implements OnInit {
 
     allTransactions = [];
 
-    constructor(private transactionsService: TransactionsService) {}
+    constructor(private transactionsService: TransactionsService) {
+        effect(() => {
+            this.processChartData();
+        });
+    }
 
     ngOnInit() {
         this.transactionsService.transactions
@@ -72,7 +77,7 @@ export class TransactionDebitPieChart implements OnInit {
     }
 
     processChartData(): void {
-        let { start, end } = this._filter;
+        let { start, end } = this.filter();
 
         if (!start || !end) return;
 
