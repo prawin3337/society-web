@@ -72,7 +72,7 @@ export class TransactionComponent  implements OnInit, OnDestroy {
       this.transactionTypes.push(
         { value: 'lightBill', viewValue: 'Light Bill' },
         { value: 'serviceCharges', viewValue: 'Service charges' },
-        { value: 'glossary', viewValue: 'Glossary' },
+        { value: 'cleaningMaterial', viewValue: 'Cleaning Material' },
         { value: 'electricAndMotorService', viewValue: 'Electric and motor service' },
         { value: 'repairing', viewValue: 'Repairing' },
         { value: 'amc', viewValue: 'AMC contract' },

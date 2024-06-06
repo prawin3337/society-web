@@ -103,13 +103,13 @@ export class TransactionDebitPieChart implements OnInit {
         const dataArr:any[] = [];
 
         Object.keys(dataGroup).forEach((key) => {
-
-            const lebel = upperCase(key.replace(/([A-Z])/g, " $1"));
-            labels.push(lebel);
-
             const groupTotal = sumBy(dataGroup[key], "debitAmount");
             const perVal = Math.round(groupTotal / totalDebitCnt * 100);
-            perVal && dataArr.push(perVal);
+            if (perVal) {
+                const lebel = upperCase(key.replace(/([A-Z])/g, " $1"));
+                labels.push(lebel);
+                dataArr.push(perVal);
+            }
         });
 
         let newPieChartData = Object.assign({}, this.pieChartData);
