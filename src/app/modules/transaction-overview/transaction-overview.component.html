@@ -3,15 +3,34 @@
     <mat-card-title> Transaction Overview</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <mat-grid-list cols="4" rowHeight="50px">
-      <mat-grid-tile [colspan]="2">Recent Transaction Date : {{transactionOvervew.recentTransactionDate}}</mat-grid-tile>
-      <mat-grid-tile>Current Balance : {{transactionOvervew.currentBalanceAmt.toLocaleString()}}/-</mat-grid-tile>
-      <mat-grid-tile>Post-approvel Balance : {{transactionOvervew.postApprovelBalanceAmt.toLocaleString()}}/-</mat-grid-tile>
+    <mat-grid-list cols="4" rowHeight="60px">
+      <mat-grid-tile [colspan]="2">
+        Recent Transaction Date:- {{transactionOvervew.recentTransactionDate}}</mat-grid-tile>
+      <mat-grid-tile>
+        Pre-approvel Balance
+        <br/>
+        {{transactionOvervew.currentBalanceAmt.toLocaleString()}}/-</mat-grid-tile>
+      <mat-grid-tile>
+        Post-approvel Balance
+        <br/>
+        {{transactionOvervew.postApprovelBalanceAmt.toLocaleString()}}/-</mat-grid-tile>
 
-      <mat-grid-tile>Approved Credit Amount : {{transactionOvervew.approvedCreditAmt.toLocaleString()}}/-</mat-grid-tile>
-      <mat-grid-tile>Non-Approved Credit Amount : {{transactionOvervew.nonApprovedCreditAmt.toLocaleString()}}/-</mat-grid-tile>
-      <mat-grid-tile>Approved Debit Amount : {{transactionOvervew.approvedDebitAmt.toLocaleString()}}/-</mat-grid-tile>
-      <mat-grid-tile>Non-Approved Debit Amount : {{transactionOvervew.nonApprovedDebitAmt.toLocaleString()}}/-</mat-grid-tile>
+      <mat-grid-tile>
+        Approved Credit Amount 
+        <br/>
+        {{transactionOvervew.approvedCreditAmt.toLocaleString()}}/-</mat-grid-tile>
+      <mat-grid-tile>
+        Non-Approved Credit Amount
+        <br/>
+        {{transactionOvervew.nonApprovedCreditAmt.toLocaleString()}}/-</mat-grid-tile>
+      <mat-grid-tile>
+        Approved Debit Amount
+        <br/>
+        {{transactionOvervew.approvedDebitAmt.toLocaleString()}}/-</mat-grid-tile>
+      <mat-grid-tile>
+        Non-Approved Debit Amount
+        <br/>
+        {{transactionOvervew.nonApprovedDebitAmt.toLocaleString()}}/-</mat-grid-tile>
     </mat-grid-list>
   </mat-card-content>
 </mat-card>
