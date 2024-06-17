@@ -17,6 +17,8 @@ import { NgChartsModule } from 'ng2-charts';
 
 import { MaintainancePieChart } from "./charts/maintainance.pie.chart";
 import { TransactionDebitPieChart } from "./charts/transaction.debit.pie.chart";
+import { TransactionOverviewComponent } from '../transaction-overview/transaction-overview.component';
+import { MatDivider, MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   imports: [
@@ -29,7 +31,9 @@ import { TransactionDebitPieChart } from "./charts/transaction.debit.pie.chart";
     DashboardPageRoutingModule,
     NgChartsModule,
     MatDatepickerModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    TransactionOverviewComponent,
+    MatDividerModule
   ],
   declarations: [
     DashboardPage,

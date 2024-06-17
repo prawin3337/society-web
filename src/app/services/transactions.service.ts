@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject, tap } from 'rxjs';
+import { Subject, map, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ToastController } from '@ionic/angular';
+import { formatDate } from '../util';
 
 @Injectable({
   providedIn: 'root'
@@ -70,5 +71,13 @@ export class TransactionsService {
 
   approveTransaction(id: number, isApproved: string, flatNo: string) {
     return this.http.post(environment.apis.transactionApprove, { id, isApproved, flatNo });
+  }
+
+  getTransactionOvervew() {
+    return this.http.get(environment.apis.transactionOverview)
+      .pipe(map((res: any) => {
+        res.data.recentTransactionDate = formatDate(res.data.recentTransactionDate);
+        return res.data;
+      }));
   }
 }
