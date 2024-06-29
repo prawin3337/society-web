@@ -94,6 +94,7 @@ export class TransactionComponent  implements OnInit, OnDestroy {
       flatNo: new FormControl('', { validators: [Validators.required] }),
       creditAmount: new FormControl(null),
       debitAmount: new FormControl(null),
+      addPettyCash: new FormControl(false),
       description: new FormControl('', {}),
       transactionCode: new FormControl('', { validators: [Validators.required, Validators.minLength(4)]}),
       transactionDate: new FormControl('',

@@ -13,6 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { AuthDirective } from "../directives/auth.directive";
 
@@ -35,6 +36,7 @@ import { AuthDirective } from "../directives/auth.directive";
     MatIconModule,
     AuthDirective,
     MatExpansionModule,
+    MatCheckboxModule
     // ExcelExportModul
   ],
   exports: [
