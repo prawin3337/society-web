@@ -3,9 +3,11 @@
     <mat-card-title>Account Summary</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <mat-grid-list cols="4" rowHeight="60px">
-      <mat-grid-tile [colspan]="2">
-        Recent Transaction Date:- {{transactionOvervew.recentTransactionDate}}</mat-grid-tile>
+    <mat-grid-list cols="5" rowHeight="60px">
+      <mat-grid-tile>
+        Recent Transaction Date
+        <br />
+        {{transactionOvervew.recentTransactionDate}}</mat-grid-tile>
       <mat-grid-tile>
         Pre-approvel Balance
         <br/>
@@ -14,7 +16,14 @@
         Post-approvel Balance
         <br/>
         {{transactionOvervew.postApprovelBalanceAmt.toLocaleString()}}/-</mat-grid-tile>
-
+      <mat-grid-tile>
+        Petty Cash
+        <br />
+        {{pettyCashSummary?.balanceAmount?.toLocaleString()}}/-</mat-grid-tile>
+      <mat-grid-tile>
+        Approx bank Balance
+        <br />
+        {{getBankBal()}}/-</mat-grid-tile>
       <mat-grid-tile>
         Credit Amount 
         <br/>

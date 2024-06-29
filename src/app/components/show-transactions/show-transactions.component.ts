@@ -52,6 +52,7 @@ export class ShowTransactionsComponent  implements OnInit {
     private alertController: AlertController,
     private maintenanceService: MaintainanceService) {
     this.tableCol = [
+      { field: "id", width: 50 },
       { field: "creditAmount", width: 100 },
       {
         field: "transactionDate",

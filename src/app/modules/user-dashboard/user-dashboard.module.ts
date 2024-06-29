@@ -18,6 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { AuthDirective } from 'src/app/directives/auth.directive';
 
 import { MaintainanceModule } from "../../components/maintainance/maintainance.module";
+import { PettyCashFormComponent } from '../petty-cash/petty-cash-form/petty-cash-form.component';
 
 @NgModule({
   imports: [
@@ -36,7 +37,8 @@ import { MaintainanceModule } from "../../components/maintainance/maintainance.m
     CommonComponentModule,
     ShowTransactionsComponent,
     AuthDirective,
-    MaintainanceModule
+    MaintainanceModule,
+    PettyCashFormComponent
   ],
   declarations: [UserDashboardPage]
 })

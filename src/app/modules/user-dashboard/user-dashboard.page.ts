@@ -2,6 +2,7 @@ import { Component, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounce, debounceTime } from 'rxjs';
 import { MemberService } from 'src/app/services/member.service';
+import { PettyCashService, summary } from 'src/app/services/petty-cash.service';
 
 @Component({
   selector: 'app-tab2',
@@ -35,7 +36,9 @@ export class UserDashboardPage {
 
   selectedTransaction:any = null;
 
-  constructor(private memberService: MemberService) {}
+  pettyCashSummary!: summary;
+
+  constructor(private memberService: MemberService, private pettyCashService: PettyCashService) {}
 
   ngOnInit() {
     this.userInfo = this.memberService.getUserInfo();
@@ -59,6 +62,8 @@ export class UserDashboardPage {
         this.filter = this.filterForm.value;
         // this.onFilterChange.emit(this.filterForm.value);
       });
+
+    this.getPettyCashSummary();
   }
 
   onMaintainaceDetails(event: any) {
@@ -80,6 +85,13 @@ export class UserDashboardPage {
     if(this.selectedTransaction) {
       this.panelOpenState = true;
     }
+  }
+
+  getPettyCashSummary() {
+    this.pettyCashService.getPettyCashSummary()
+      .subscribe((data: summary) => {
+        this.pettyCashSummary = data;
+      });
   }
 
 }

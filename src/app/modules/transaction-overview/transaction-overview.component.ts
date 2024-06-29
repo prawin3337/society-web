@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { TransactionsService } from 'src/app/services/transactions.service';
+import { PettyCashService, summary } from 'src/app/services/petty-cash.service';
 
 @Component({
   selector: 'app-transaction-overview',
@@ -11,6 +12,8 @@ import { TransactionsService } from 'src/app/services/transactions.service';
   imports: [MatGridListModule, MatCardModule]
 })
 export class TransactionOverviewComponent  implements OnInit {
+
+  pettyCashSummary!:summary;
 
   transactionOvervew = {
     "approvedCreditAmt": 0,
@@ -22,13 +25,28 @@ export class TransactionOverviewComponent  implements OnInit {
     "recentTransactionDate": new Date()
   };
 
-  constructor(private transactionService: TransactionsService) { }
+  constructor(private transactionService: TransactionsService,
+    private pettyCashService: PettyCashService
+  ) { }
 
   ngOnInit() {
     this.transactionService.getTransactionOvervew()
       .subscribe((data: any) => {
         this.transactionOvervew = data;
       });
+    this.getPettyCashSummary();
+  }
+
+  getPettyCashSummary() {
+    this.pettyCashService.getPettyCashSummary()
+      .subscribe((data: summary) => {
+        this.pettyCashSummary = data;
+      });
+  }
+
+  getBankBal(): number|string {
+    return (this.pettyCashSummary && this.transactionOvervew.currentBalanceAmt)
+      ? this.transactionOvervew.currentBalanceAmt - this.pettyCashSummary.balanceAmount : 'NA';
   }
 
 }

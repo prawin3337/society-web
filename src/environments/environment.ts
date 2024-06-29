@@ -17,7 +17,10 @@ export const environment = {
     transactionAll: `${apiDomain}/api/transaction/all`,
     transactionApprove: `${apiDomain}/api/transaction/approve`,
     transactionOverview: `${apiDomain}/api/transaction/overview`,
-    maintenanceAll: `${apiDomain}/api/maintenance/all`
+    maintenanceAll: `${apiDomain}/api/maintenance/all`,
+    pettyCashAll: `${apiDomain}/api/petty-cash/all`,
+    pettyCash: `${apiDomain}/api/petty-cash`,
+    pettyCashSummary: `${apiDomain}/api/petty-cash/summary`
   }
 };
 

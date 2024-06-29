@@ -1,0 +1,38 @@
+<form [formGroup]="transactionForm" (submit)="onSubmit()">
+  <mat-form-field>
+    <mat-label>Credit Amount</mat-label>
+    <input matInput placeholder="" type="number" formControlName="creditAmount" name="creditAmount">
+  </mat-form-field>
+
+  <mat-form-field authDirective>
+    <mat-label>Debit Amount</mat-label>
+    <input matInput placeholder="" type="number" formControlName="debitAmount" name="debitAmount">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Transaction Ref/Cash</mat-label>
+    <input matInput placeholder="Referance No/ID." formControlName="transactionRef" name="transactionRef">
+    <mat-hint>Minimum last 4 caractors/digits.</mat-hint>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Transaction Date</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="transactionDate" name="transactionDate">
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-hint>MM/DD/YYYY</mat-hint>
+  </mat-form-field>
+
+  <!-- Optional fields-->
+
+  <mat-form-field>
+    <mat-label>Transaction Details</mat-label>
+    <input matInput placeholder="" formControlName="description" name="description">
+    <mat-hint>Ex: Cash for service charges.</mat-hint>
+  </mat-form-field>
+
+  <button [disabled]="disableSubmitBtn()" type="submit" mat-raised-button color="primary">
+    {{'submit' | uppercase}}
+  </button>
+</form>
+

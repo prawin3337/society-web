@@ -25,7 +25,7 @@
   </mat-card>
 
   <mat-accordion>
-    <mat-expansion-panel [expanded]="true">
+    <mat-expansion-panel [expanded]="filter.flatNo !== '0'">
       <mat-expansion-panel-header>
         <mat-panel-title>
           <i class="bi bi-file-earmark-spreadsheet"></i>&nbsp;
@@ -68,19 +68,31 @@
 
 
   <mat-accordion>
-    <mat-expansion-panel [expanded]="false" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+    <mat-expansion-panel [expanded]="filter.flatNo === '0'" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          <i class="bi bi-cash-coin me-1"></i>&nbsp;
-          Update transaction
+          <div class="col-6">
+            <i class="bi bi-cash-coin me-1"></i>&nbsp;
+            Update transaction
+          </div>
+          @if(filter.flatNo === '0') {
+            <div class="col-6 ms-4">
+              Update Petty Cash &nbsp; | &nbsp;
+              <span>balance amount: {{pettyCashSummary?.balanceAmount}}rs</span>
+            </div>
+          }
         </mat-panel-title>
-
       </mat-expansion-panel-header>
   
-      <app-transaction *ngIf="userInfo.flatNo"
-        [filter]="filter"
-        [selectedTransaction]="selectedTransaction">
-      </app-transaction>
+      <div class="row">
+        <div class="col-6">
+          <app-transaction *ngIf="userInfo.flatNo" [filter]="filter" [selectedTransaction]="selectedTransaction">
+          </app-transaction>
+        </div>
+        <div class="col-6">
+          <app-petty-cash-form authDirective></app-petty-cash-form>
+        </div>
+      </div>
   
     </mat-expansion-panel>
   </mat-accordion>
