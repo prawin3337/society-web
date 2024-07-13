@@ -46,7 +46,8 @@ export class TransactionOverviewComponent  implements OnInit {
 
   getBankBal(): number|string {
     return (this.pettyCashSummary && this.transactionOvervew.currentBalanceAmt)
-      ? this.transactionOvervew.currentBalanceAmt - this.pettyCashSummary.balanceAmount : 'NA';
+      ? (this.transactionOvervew.currentBalanceAmt - this.pettyCashSummary.balanceAmount).toLocaleString()
+      : 'NA';
   }
 
 }

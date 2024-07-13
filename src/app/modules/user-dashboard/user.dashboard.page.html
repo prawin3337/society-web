@@ -85,11 +85,11 @@
       </mat-expansion-panel-header>
   
       <div class="row">
-        <div class="col-6">
+        <div class="col-12 col-md-6">
           <app-transaction *ngIf="userInfo.flatNo" [filter]="filter" [selectedTransaction]="selectedTransaction">
           </app-transaction>
         </div>
-        <div class="col-6">
+        <div class="col-12 col-md-6">
           <app-petty-cash-form authDirective></app-petty-cash-form>
         </div>
       </div>
