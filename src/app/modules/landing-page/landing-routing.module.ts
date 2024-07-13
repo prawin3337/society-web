@@ -28,7 +28,7 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/society/user-dashboard',
+        redirectTo: 'user-dashboard',
         pathMatch: 'full'
       }
     ]

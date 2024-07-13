@@ -27,7 +27,13 @@ export class TransactionOverviewComponent  implements OnInit {
 
   constructor(private transactionService: TransactionsService,
     private pettyCashService: PettyCashService
-  ) { }
+  ) {
+    this.pettyCashSummary = {
+      balanceAmount: 0,
+      totalCreditAmount: 0,
+      totalDebitAmount: 0
+    }
+  }
 
   ngOnInit() {
     this.transactionService.getTransactionOvervew()

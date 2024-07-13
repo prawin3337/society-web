@@ -38,7 +38,13 @@ export class UserDashboardPage {
 
   pettyCashSummary!: summary;
 
-  constructor(private memberService: MemberService, private pettyCashService: PettyCashService) {}
+  constructor(private memberService: MemberService, private pettyCashService: PettyCashService) {
+    this.pettyCashSummary = {
+      totalCreditAmount: 0,
+      totalDebitAmount: 0,
+      balanceAmount: 0
+    }
+  }
 
   ngOnInit() {
     this.userInfo = this.memberService.getUserInfo();
