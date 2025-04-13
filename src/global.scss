@@ -27,9 +27,9 @@
 
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
-@import "~ag-grid-community/styles//ag-grid.css";
+@import "~ag-grid-community/styles/ag-grid.css";
 @import "~ag-grid-community/styles/ag-theme-balham.css";
-@import "~ag-grid-community/styles/agGridMaterialFont.min.css";
+// @import "~ag-grid-community/styles/agGridMaterialFont.min.css";
 
 :root {
     --ag-icon-font-family: "agGridMaterial";
